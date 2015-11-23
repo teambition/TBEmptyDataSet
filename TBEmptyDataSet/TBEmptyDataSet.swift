@@ -131,7 +131,7 @@ private class EmptyDataView: UIView {
         }
     }
     
-    func prepareForReuse() {
+    func resetEmptyDataView() {
         view.subviews.forEach { subview in
             subview.removeFromSuperview()
         }
@@ -294,7 +294,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         }
     }
     
-    var emptyDataViewVisible: Bool? {
+    var emptyDataViewVisible: Bool {
         get {
             if let emptyDataView = objc_getAssociatedObject(self, AssociatedKeys.emptyDataView) as? EmptyDataView {
                 return emptyDataView.hidden
@@ -512,12 +512,84 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     private func handlingInvalidEmptyDataSet() {
         emptyDataSetWillDisappear()
         
-        emptyDataView.prepareForReuse()
+        emptyDataView.resetEmptyDataView()
         emptyDataView.removeFromSuperview()
         setEmptyDataView(nil)
         scrollEnabled = true
         
         emptyDataSetDidDisappear()
     }
+    
+    // MARK: - UIGestureRecognizer delegate
+    override public func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.view?.isEqual(EmptyDataView) == true {
+            return emptyDataSetTapEnabled()
+        }
+        return super.gestureRecognizerShouldBegin(gestureRecognizer)
+    }
+    
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isEqual(emptyDataView.tapGesture) || otherGestureRecognizer.isEqual(emptyDataView.tapGesture) {
+            return true
+        }
+        return false
+    }
+    
+    // MARK: - Reload
+    private func reloadEmptyDataSet() {
+        if !emptyDataSetAvailable() {
+            return
+        }
+        
+        if !emptyDataSetShouldDisplay() || cellsCount() > 0 {
+            if emptyDataViewVisible {
+                handlingInvalidEmptyDataSet()
+            }
+            return
+        }
+        
+        emptyDataSetWillAppear()
+        
+        if emptyDataView.superview == nil {
+            addSubview(emptyDataView)
+            sendSubviewToBack(emptyDataView)
+        }
+        emptyDataView.resetEmptyDataView()
+        
+        if let customView = emptyDataSetCustomView() {
+            emptyDataView.customView = customView
+        } else {
+            if let image = emptyDataSetImage() {
+                if let imageTintColor = emptyDataSetImageTintColor() {
+                    emptyDataView!.imageView!.image = image.imageWithRenderingMode(.AlwaysTemplate)
+                    emptyDataView!.imageView!.tintColor = imageTintColor
+                } else {
+                    emptyDataView!.imageView!.image = image.imageWithRenderingMode(.AlwaysOriginal)
+                }
+            }
+            
+            if let title = emptyDataSetTitle() {
+                emptyDataView.titleLabel!.attributedText = title
+            }
+            
+            if let description = emptyDataSetDescription() {
+                emptyDataView.descriptionLabel!.attributedText = description
+            }
+        }
+        
+        emptyDataView.backgroundColor = emptyDataSetBackgroundColor()
+        emptyDataView.hidden = false
+        emptyDataView.clipsToBounds = true
+        emptyDataView.userInteractionEnabled = emptyDataSetTapEnabled()
+        scrollEnabled = emptyDataSetScrollEnabled()
+        
+        emptyDataView.setConstraints()
+        emptyDataView.layoutIfNeeded()
+        
+        emptyDataSetDidAppear()
+    }
+    
+    // MARK: - Method swizzling
+    
 }
 
