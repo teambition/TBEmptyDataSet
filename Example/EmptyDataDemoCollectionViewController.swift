@@ -55,6 +55,10 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmpty
         return UIImage(named: "icon-empty-photos")!
     }
     
+    func backgroundColorForEmptyDataSet(scrollView: UIScrollView!) -> UIColor {
+        return UIColor(white: 0.95, alpha: 1)
+    }
+    
     // MARK: - TBEmptyDataSet delegate
     func emptyDataSetScrollEnabled(scrollView: UIScrollView!) -> Bool {
         return true

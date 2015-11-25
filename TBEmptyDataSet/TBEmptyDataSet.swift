@@ -94,24 +94,15 @@ private class EmptyDataView: UIView {
     }
     
     private func shouldShowImageView() -> Bool {
-        if let _ = imageView.superview {
-            return true
-        }
-        return false
+        return imageView.image != nil
     }
     
     private func shouldShowTitleLabel() -> Bool {
-        if let _ = titleLabel.superview {
-            return titleLabel.attributedText?.length > 0
-        }
-        return false
+        return titleLabel.attributedText?.length > 0
     }
     
     private func shouldShowDescriptionLabel() -> Bool {
-        if let _ = descriptionLabel.superview {
-            return descriptionLabel.attributedText?.length > 0
-        }
-        return false
+        return descriptionLabel.attributedText?.length > 0
     }
     
     // MARK: - View life cycle
@@ -132,9 +123,10 @@ private class EmptyDataView: UIView {
     }
     
     func resetEmptyDataView() {
-        view.subviews.forEach { subview in
-            subview.removeFromSuperview()
-        }
+        imageView.image = nil
+        titleLabel.attributedText = nil
+        descriptionLabel.attributedText = nil
+        
         customView = nil
         removeAllConstraints()
     }
@@ -236,7 +228,10 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     private struct Selectors {
         static let dataSource: Selector = "dataSource"
         static let reloadData: Selector = "reloadData"
-        static let swizzledReloadData: Selector = "tb_swizzledReloadData"
+        static let endUpdates: Selector = "endUpdates"
+        static let tableViewSwizzledReloadData: Selector = "tb_tableViewSwizzledReloadData"
+        static let tableViewSwizzledEndUpdates: Selector = "tb_tableViewSwizzledEndUpdates"
+        static let collectionViewSwizzledReloadData: Selector = "tb_collectionViewSwizzledReloadData"
     }
     
     private struct TableViewSelectors {
@@ -283,7 +278,10 @@ extension UIScrollView: UIGestureRecognizerDelegate {
             if let newValue = newValue {
                 objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetDataSource, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                 
-                swizzleReloadData()
+                swizzleMethod(selector: Selectors.reloadData)
+                if isKindOfClass(UITableView.self) {
+                    swizzleMethod(selector: Selectors.endUpdates)
+                }
             } else {
                 handlingInvalidEmptyDataSet()
             }
@@ -622,39 +620,75 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     }
     
     // MARK: - Method swizzling
-    private func swizzleReloadData() {
-        struct tb_swizzleToken {
-            static var onceToken: dispatch_once_t = 0
+    private func swizzleMethod(selector selector: Selector) {
+        struct SwizzledInfo {
+            static var methods: [String] = Array()
         }
         
-        if !respondsToSelector(Selectors.reloadData) {
-            return
+        struct MethodKeys {
+            static let selector = "selector"
+            static let owner = "owner"
+            static let pointer = "pointer"
         }
         
-        dispatch_once(&tb_swizzleToken.onceToken) { () -> Void in
-            var currentClass: AnyClass
-            if self.isKindOfClass(UITableView.self) {
-                currentClass = UITableView.self
-            } else if self.isKindOfClass(UICollectionView.self) {
-                currentClass = UICollectionView.self
-            } else {
-                return
-            }
+        func swizzle(swizzledSelector swizzledSelector: Selector) {
+            let originalSelector = selector
+            let originalMethod = class_getInstanceMethod(self.dynamicType, originalSelector)
+            let swizzledMethod = class_getInstanceMethod(self.dynamicType, swizzledSelector)
             
-            let originalSelector = Selectors.reloadData
-            let swizzledSelector = Selectors.swizzledReloadData
-            let originalMethod = class_getInstanceMethod(currentClass, originalSelector)
-            let swizzledMethod = class_getInstanceMethod(currentClass, swizzledSelector)
+            let className = NSStringFromClass(self.dynamicType)
+            let selectorName = NSStringFromSelector(originalSelector)
+            let method = className + "_" + selectorName
+            if SwizzledInfo.methods.contains(method) {
+                print("\(method) has already been swizzled!")
+                return
+            } else {
+                SwizzledInfo.methods.append(method)
+            }
             
             method_exchangeImplementations(originalMethod, swizzledMethod)
         }
+        
+        if !respondsToSelector(selector) {
+            return
+        }
+        
+        if self.isKindOfClass(UITableView.self) {
+            var swizzledSelector: Selector?
+            if selector == Selectors.reloadData {
+                swizzledSelector = Selectors.tableViewSwizzledReloadData
+            } else if selector == Selectors.endUpdates {
+                swizzledSelector = Selectors.tableViewSwizzledEndUpdates
+            }
+            
+            if let _ = swizzledSelector {
+                swizzle(swizzledSelector: swizzledSelector!)
+            } else {
+                return
+            }
+        } else if self.isKindOfClass(UICollectionView.self) {
+            swizzle(swizzledSelector: Selectors.collectionViewSwizzledReloadData)
+        } else {
+            return
+        }
     }
     
-    public func tb_swizzledReloadData() {
-        // tb_swizzledReloadData here is actually the original method reloadData, although it seems like recursive.
-        tb_swizzledReloadData()
-        
+    public func tb_tableViewSwizzledReloadData() {
+        tb_tableViewSwizzledReloadData()
         reloadEmptyDataSet()
+        print("\(__FUNCTION__)")
+    }
+    
+    public func tb_tableViewSwizzledEndUpdates() {
+        tb_tableViewSwizzledEndUpdates()
+        reloadEmptyDataSet()
+        print("\(__FUNCTION__)")
+    }
+    
+    public func tb_collectionViewSwizzledReloadData() {
+        tb_collectionViewSwizzledReloadData()
+        reloadEmptyDataSet()
+        print("\(__FUNCTION__)")
     }
 }
 
