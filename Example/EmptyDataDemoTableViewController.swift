@@ -13,27 +13,27 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
     private struct CellIdentifier {
         static let reuseIdentifier = "Cell"
     }
-    
+
     // MARK: - Properties
     var indexPath = NSIndexPath()
     private var isLoading = false
-    
+
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         navigationItem.title = "TableView"
         tableView.tableFooterView = UIView()
         refreshControl?.addTarget(self, action: "fetchData:", forControlEvents: .ValueChanged)
-        
+
         tableView.emptyDataSetDataSource = self
         tableView.emptyDataSetDelegate = self
-        
+
         if indexPath.row != 0 {
             loadData(self)
         }
     }
-    
+
     // MARK: - Helper
     func fetchData(sender: AnyObject) {
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.5 * Double(NSEC_PER_SEC)))
@@ -41,7 +41,7 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
             self.refreshControl?.endRefreshing()
         }
     }
-    
+
     func loadData(sender: AnyObject) {
         isLoading = true
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.75 * Double(NSEC_PER_SEC)))
@@ -81,7 +81,7 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
         }
         return NSAttributedString(string: title, attributes: attributes)
     }
-    
+
     func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString? {
         let description = EmptyData.descriptions[indexPath.row]
         var attributes: [String : AnyObject]?
@@ -92,18 +92,18 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
         }
         return NSAttributedString(string: description, attributes: attributes)
     }
-    
+
     func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage? {
         return EmptyData.images[indexPath.row]
     }
-    
+
     func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
         if let navigationBar = navigationController?.navigationBar {
             return -navigationBar.frame.height * 0.75
         }
         return 0
     }
-    
+
     func customViewForEmptyDataSet(scrollView: UIScrollView!) -> UIView? {
         if isLoading {
             let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
@@ -112,36 +112,36 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
         }
         return nil
     }
-    
+
     // MARK: - TBEmptyDataSet delegate
     func emptyDataSetScrollEnabled(scrollView: UIScrollView!) -> Bool {
         return true
     }
-    
+
     func emptyDataSetTapEnabled(scrollView: UIScrollView!) -> Bool {
         return true
     }
-    
+
     func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
         return true
     }
-    
+
     func emptyDataSetWillAppear(scrollView: UIScrollView!) {
          print("EmptyDataSet Will Appear!")
     }
-    
+
     func emptyDataSetDidAppear(scrollView: UIScrollView!) {
         print("EmptyDataSet Did Appear!")
     }
-    
+
     func emptyDataSetWillDisappear(scrollView: UIScrollView!) {
         print("EmptyDataSet Will Disappear!")
     }
-    
+
     func emptyDataSetDidDisappear(scrollView: UIScrollView!) {
         print("EmptyDataSet Did Disappear!")
     }
-    
+
     func emptyDataSetDidTapView(scrollView: UIScrollView!) {
         let alert = UIAlertController(title: nil, message: "Did Tap EmptyDataView!", preferredStyle: .Alert)
         let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)

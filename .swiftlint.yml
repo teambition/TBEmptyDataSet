@@ -1,0 +1,12 @@
+disabled_rules: # rule identifiers to exclude from running
+  - line_length
+  - nesting
+included: # paths to include during linting. `--path` is ignored if present. takes precendence over `excluded`.
+excluded: # paths to ignore during linting. overridden by `included`.
+  - Carthage
+# parameterized rules can be customized from this configuration file
+line_length: 150
+# parameterized rules are first parameterized as a warning level, then error level.
+type_body_length:
+  - 300 # warning
+  - 400 # error

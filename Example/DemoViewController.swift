@@ -20,19 +20,19 @@ class DemoViewController: UITableViewController {
         static let examples = ["Empty Photos", "Empty Events", "Empty Message"]
         static let sectionTitles = ["TableView", "CollectionView"]
     }
-    
+
     private struct SegueIdentifier {
         static let showTableView = "ShowEmptyDataDemoTableView"
         static let showCollectionView = "ShowEmptyDataDemoCollectionView"
     }
-    
+
     private struct CellIdentifier {
         static let reuseIdentifier = "Cell"
     }
-    
+
     // MARK: - Properties
     var selectedIndexPath = NSIndexPath()
-    
+
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,11 +52,11 @@ class DemoViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Data.examples.count
     }
-    
+
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return Data.sectionTitles[section]
     }
-    
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.reuseIdentifier)
         if cell == nil {
@@ -67,7 +67,7 @@ class DemoViewController: UITableViewController {
 
         return cell!
     }
-    
+
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selectedIndexPath = indexPath
         if indexPath.section == 0 {
@@ -75,10 +75,10 @@ class DemoViewController: UITableViewController {
         } else if indexPath.section == 1 {
             performSegueWithIdentifier(SegueIdentifier.showCollectionView, sender: self)
         }
-        
+
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
+
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SegueIdentifier.showTableView {
