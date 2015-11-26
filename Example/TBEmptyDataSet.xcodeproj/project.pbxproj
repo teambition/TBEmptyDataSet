@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D3013DFB1C06B7FA00266EE2 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3013DFA1C06B7FA00266EE2 /* DemoViewController.swift */; };
 		D3565AA31BFD9449002CFA16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3565AA21BFD9449002CFA16 /* AppDelegate.swift */; };
 		D3565AA81BFD9449002CFA16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3565AA61BFD9449002CFA16 /* Main.storyboard */; };
 		D3565AAA1BFD9449002CFA16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3565AA91BFD9449002CFA16 /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D3013DFA1C06B7FA00266EE2 /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		D3565A9F1BFD9449002CFA16 /* TBEmptyDataSet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TBEmptyDataSet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3565AA21BFD9449002CFA16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3565AA71BFD9449002CFA16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				D3565AA21BFD9449002CFA16 /* AppDelegate.swift */,
+				D3013DFA1C06B7FA00266EE2 /* DemoViewController.swift */,
 				D39EBFC91C040C040089B394 /* EmptyDataDemoTableViewController.swift */,
 				D39EBFCB1C040F220089B394 /* EmptyDataDemoCollectionViewController.swift */,
 				D3565AA61BFD9449002CFA16 /* Main.storyboard */,
@@ -150,6 +153,7 @@
 				D39EBFCA1C040C040089B394 /* EmptyDataDemoTableViewController.swift in Sources */,
 				D3565AB61BFD970F002CFA16 /* TBEmptyDataSet.swift in Sources */,
 				D39EBFCC1C040F220089B394 /* EmptyDataDemoCollectionViewController.swift in Sources */,
+				D3013DFB1C06B7FA00266EE2 /* DemoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

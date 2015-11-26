@@ -16,7 +16,7 @@ private class EmptyDataView: UIView {
     }
     
     private struct ViewStrings {
-        static let view = "view"
+        static let contentView = "contentView"
         static let imageView = "imageView"
         static let titleLabel = "titleLabel"
         static let descriptionLabel = "descriptionLabel"
@@ -24,13 +24,13 @@ private class EmptyDataView: UIView {
     }
     
     // MARK: - Properties
-    lazy var view: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clearColor()
-        view.userInteractionEnabled = true
-        view.alpha = 0
-        return view
+    lazy var contentView: UIView = {
+        let contentView = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.backgroundColor = UIColor.clearColor()
+        contentView.userInteractionEnabled = true
+        contentView.alpha = 0
+        return contentView
     }()
     
     lazy var imageView: UIImageView = { [unowned self] in
@@ -39,7 +39,7 @@ private class EmptyDataView: UIView {
         imageView.backgroundColor = UIColor.clearColor()
         imageView.contentMode = .ScaleAspectFill
         imageView.userInteractionEnabled = false
-        self.view.addSubview(imageView)
+        self.contentView.addSubview(imageView)
         return imageView
     }()
     
@@ -52,7 +52,7 @@ private class EmptyDataView: UIView {
         titleLabel.textAlignment = .Center
         titleLabel.lineBreakMode = .ByWordWrapping
         titleLabel.numberOfLines = 0
-        self.view.addSubview(titleLabel)
+        self.contentView.addSubview(titleLabel)
         return titleLabel
     }()
     
@@ -65,7 +65,7 @@ private class EmptyDataView: UIView {
         descriptionLabel.textAlignment = .Center
         descriptionLabel.lineBreakMode = .ByWordWrapping
         descriptionLabel.numberOfLines = 0
-        self.view.addSubview(descriptionLabel)
+        self.contentView.addSubview(descriptionLabel)
         return descriptionLabel
     }()
     
@@ -79,7 +79,7 @@ private class EmptyDataView: UIView {
         didSet {
             if let _ = customView {
                 customView!.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview(customView!)
+                contentView.addSubview(customView!)
             }
         }
     }
@@ -89,7 +89,7 @@ private class EmptyDataView: UIView {
     
     // MARK: - Helper
     private func removeAllConstraints() {
-        view.removeConstraints(view.constraints)
+        contentView.removeConstraints(contentView.constraints)
         removeConstraints(constraints)
     }
     
@@ -108,7 +108,7 @@ private class EmptyDataView: UIView {
     // MARK: - View life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(self.view)
+        addSubview(self.contentView)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -118,7 +118,7 @@ private class EmptyDataView: UIView {
     override func didMoveToSuperview() {
         frame = super.bounds
         UIView.animateWithDuration(0.25) { () -> Void in
-            self.view.alpha = 1
+            self.contentView.alpha = 1
         }
     }
     
@@ -126,22 +126,24 @@ private class EmptyDataView: UIView {
         imageView.image = nil
         titleLabel.attributedText = nil
         descriptionLabel.attributedText = nil
-        
         customView = nil
+        
         removeAllConstraints()
     }
     
     // MARK: - Configuration
     func setConstraints() {
-        let centerX = NSLayoutConstraint(item: view, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0)
-        let centerY = NSLayoutConstraint(item: view, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: verticalOffset)
+        let centerX = NSLayoutConstraint(item: contentView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0)
+        let centerY = NSLayoutConstraint(item: contentView, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: verticalOffset)
         addConstraint(centerX)
         addConstraint(centerY)
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[\(ViewStrings.view)]|", options: [], metrics: nil, views: [ViewStrings.view : view]))
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[\(ViewStrings.contentView)]|", options: [], metrics: nil, views: [ViewStrings.contentView : contentView]))
         
-        if let _ = customView {
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[\(ViewStrings.customView)]|", options: [], metrics: nil, views: [ViewStrings.customView : customView!]))
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[\(ViewStrings.customView)]|", options: [], metrics: nil, views: [ViewStrings.customView : customView!]))
+        if let customView = customView {
+            contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .CenterX, relatedBy: .Equal, toItem: contentView, attribute: .CenterX, multiplier: 1, constant: 0))
+            contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1, constant: 0))
+            contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Width, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: customView.frame.width))
+            contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Height, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: customView.frame.height))
         } else {
             var viewStrings = [String]()
             var views = [String: UIView]()
@@ -151,14 +153,14 @@ private class EmptyDataView: UIView {
                 viewStrings.append(viewString)
                 views[viewString] = imageView
                 
-                view.addConstraint(NSLayoutConstraint(item: imageView, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0))
+                contentView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .CenterX, relatedBy: .Equal, toItem: contentView, attribute: .CenterX, multiplier: 1, constant: 0))
             }
             
             if shouldShowTitleLabel() {
                 let viewString = ViewStrings.titleLabel
                 viewStrings.append(viewString)
                 views[viewString] = titleLabel
-                view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[\(ViewStrings.titleLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.titleLabel : titleLabel]))
+                contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[\(ViewStrings.titleLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.titleLabel : titleLabel]))
             } else {
                 titleLabel.removeFromSuperview()
             }
@@ -167,7 +169,7 @@ private class EmptyDataView: UIView {
                 let viewString = ViewStrings.descriptionLabel
                 viewStrings.append(viewString)
                 views[viewString] = descriptionLabel
-                view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[\(ViewStrings.descriptionLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.descriptionLabel : descriptionLabel]))
+                contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[\(ViewStrings.descriptionLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.descriptionLabel : descriptionLabel]))
             } else {
                 descriptionLabel.removeFromSuperview()
             }
@@ -181,7 +183,7 @@ private class EmptyDataView: UIView {
             }
             
             if !verticalFormat.isEmpty {
-                view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|\(verticalFormat)|", options: [], metrics: nil, views: views))
+                contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|\(verticalFormat)|", options: [], metrics: nil, views: views))
             }
         }
     }
@@ -189,17 +191,17 @@ private class EmptyDataView: UIView {
 
 // MARK: - TBEmptyDataSetDataSource
 @objc protocol TBEmptyDataSetDataSource: NSObjectProtocol {
-    optional func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage
-    optional func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString
-    optional func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString
+    optional func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage?
+    optional func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString?
+    optional func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString?
     
-    optional func imageTintColorForEmptyDataSet(scrollView: UIScrollView!) -> UIColor
-    optional func backgroundColorForEmptyDataSet(scrollView: UIScrollView!) -> UIColor
+    optional func imageTintColorForEmptyDataSet(scrollView: UIScrollView!) -> UIColor?
+    optional func backgroundColorForEmptyDataSet(scrollView: UIScrollView!) -> UIColor?
     
     optional func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat
     optional func verticalSpaceForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat
     
-    optional func customViewForEmptyDataSet(scrollView: UIScrollView!) -> UIView
+    optional func customViewForEmptyDataSet(scrollView: UIScrollView!) -> UIView?
 }
 
 // MARK: - TBEmptyDataSetDelegate
@@ -323,7 +325,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
                 emptyDataView!.addGestureRecognizer(emptyDataView!.tapGesture)
                 setEmptyDataView(emptyDataView!)
             }
-            
             return emptyDataView!
         }
     }
@@ -344,55 +345,55 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     private func emptyDataSetImage() -> UIImage? {
         let selector = EmptyDataSetSelectors.image
         if dataSourceSelectorAvailable(selector: selector) {
-            let image = emptyDataSetDataSource!.imageForEmptyDataSet!(self)
-            assert(image.isKindOfClass(UIImage.self), "Must return a valid UIImage instance for \(selector.description)")
-            return image
+            if let image = emptyDataSetDataSource!.imageForEmptyDataSet!(self) {
+                assert(image.isKindOfClass(UIImage.self), "Must return a valid UIImage instance for \(selector.description)")
+                return image
+            }
         }
-        
         return nil
     }
     
     private func emptyDataSetTitle() -> NSAttributedString? {
         let selector = EmptyDataSetSelectors.title
         if dataSourceSelectorAvailable(selector: selector) {
-            let title = emptyDataSetDataSource!.titleForEmptyDataSet!(self)
-            assert(title.isKindOfClass(NSAttributedString.self), "Must return a valid NSAttributedString instance for \(selector.description)")
-            return title
+            if let title = emptyDataSetDataSource!.titleForEmptyDataSet!(self) {
+                assert(title.isKindOfClass(NSAttributedString.self), "Must return a valid NSAttributedString instance for \(selector.description)")
+                return title
+            }
         }
-        
         return nil
     }
     
     private func emptyDataSetDescription() -> NSAttributedString? {
         let selector = EmptyDataSetSelectors.description
         if dataSourceSelectorAvailable(selector: selector) {
-            let description = emptyDataSetDataSource!.descriptionForEmptyDataSet!(self)
-            assert(description.isKindOfClass(NSAttributedString.self), "Must return a valid NSAttributedString instance for \(selector.description)")
-            return description
+            if let description = emptyDataSetDataSource!.descriptionForEmptyDataSet!(self) {
+                assert(description.isKindOfClass(NSAttributedString.self), "Must return a valid NSAttributedString instance for \(selector.description)")
+                return description
+            }
         }
-        
         return nil
     }
     
     private func emptyDataSetImageTintColor() -> UIColor? {
         let selector = EmptyDataSetSelectors.imageTintColor
         if dataSourceSelectorAvailable(selector: selector) {
-            let imageTintColor = emptyDataSetDataSource!.imageTintColorForEmptyDataSet!(self)
-            assert(imageTintColor.isKindOfClass(UIColor.self), "Must return a valid UIColor instance for \(selector.description)")
-            return imageTintColor
+            if let imageTintColor = emptyDataSetDataSource!.imageTintColorForEmptyDataSet!(self) {
+                assert(imageTintColor.isKindOfClass(UIColor.self), "Must return a valid UIColor instance for \(selector.description)")
+                return imageTintColor
+            }
         }
-        
         return nil
     }
     
     private func emptyDataSetBackgroundColor() -> UIColor? {
         let selector = EmptyDataSetSelectors.backgroundColor
         if dataSourceSelectorAvailable(selector: selector) {
-            let backgroundColor = emptyDataSetDataSource!.backgroundColorForEmptyDataSet!(self)
-            assert(backgroundColor.isKindOfClass(UIColor.self), "Must return a valid UIColor instance for \(selector.description)")
-            return backgroundColor
+            if let backgroundColor = emptyDataSetDataSource!.backgroundColorForEmptyDataSet!(self) {
+                assert(backgroundColor.isKindOfClass(UIColor.self), "Must return a valid UIColor instance for \(selector.description)")
+                return backgroundColor
+            }
         }
-        
         return nil
     }
     
@@ -417,11 +418,11 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     private func emptyDataSetCustomView() -> UIView? {
         let selector = EmptyDataSetSelectors.customView
         if dataSourceSelectorAvailable(selector: selector) {
-            let customView = emptyDataSetDataSource!.customViewForEmptyDataSet!(self)
-            assert(customView.isKindOfClass(UIView.self), "Must return a valid UIView instance for \(selector.description)")
-            return customView
+            if let customView = emptyDataSetDataSource!.customViewForEmptyDataSet!(self) {
+                assert(customView.isKindOfClass(UIView.self), "Must return a valid UIView instance for \(selector.description)")
+                return customView
+            }
         }
-        
         return nil
     }
     
@@ -438,7 +439,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         if delegateSelectorAvailable(selector: selector) {
             return emptyDataSetDelegate!.emptyDataSetShouldDisplay!(self)
         }
-        
         return true
     }
     
@@ -447,7 +447,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         if delegateSelectorAvailable(selector: selector) {
             return emptyDataSetDelegate!.emptyDataSetTapEnabled!(self)
         }
-        
         return true
     }
     
@@ -456,7 +455,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         if delegateSelectorAvailable(selector: selector) {
             return emptyDataSetDelegate!.emptyDataSetScrollEnabled!(self)
         }
-        
         return false
     }
     
@@ -583,12 +581,12 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         }
         emptyDataView.resetEmptyDataView()
         
+        emptyDataView!.verticalOffset = emptyDataSetVerticalOffset()
+        emptyDataView!.verticalSpace = emptyDataSetVerticalSpace()
+        
         if let customView = emptyDataSetCustomView() {
             emptyDataView.customView = customView
         } else {
-            emptyDataView!.verticalOffset = emptyDataSetVerticalOffset()
-            emptyDataView!.verticalSpace = emptyDataSetVerticalSpace()
-            
             if let image = emptyDataSetImage() {
                 if let imageTintColor = emptyDataSetImageTintColor() {
                     emptyDataView!.imageView.image = image.imageWithRenderingMode(.AlwaysTemplate)
@@ -623,12 +621,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     private func swizzleMethod(selector selector: Selector) {
         struct SwizzledInfo {
             static var methods: [String] = Array()
-        }
-        
-        struct MethodKeys {
-            static let selector = "selector"
-            static let owner = "owner"
-            static let pointer = "pointer"
         }
         
         func swizzle(swizzledSelector swizzledSelector: Selector) {
