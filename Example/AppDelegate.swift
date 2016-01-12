@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  TBEmptyDataSet
+//  TBEmptyDataSetExample
 //
 //  Created by 洪鑫 on 15/11/19.
 //  Copyright © 2015年 Teambition. All rights reserved.

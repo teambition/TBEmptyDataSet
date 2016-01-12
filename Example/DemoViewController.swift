@@ -1,6 +1,6 @@
 //
 //  DemoViewController.swift
-//  TBEmptyDataSet
+//  TBEmptyDataSetExample
 //
 //  Created by 洪鑫 on 15/11/26.
 //  Copyright © 2015年 Teambition. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 
 public struct EmptyData {
-    static let images = [UIImage(named: "icon-empty-photos")!, UIImage(named: "icon-empty-events")!,UIImage(named: "icon-empty-message")!]
+    static let images = [UIImage(named: "icon-empty-photos")!, UIImage(named: "icon-empty-events")!, UIImage(named: "icon-empty-message")!]
     static let titles = ["无照片", "无日程", "无新消息"]
     static let descriptions = ["你可以添加一些照片哦，让生活更精彩！", "暂时没有日程哦，添加一些日程吧！", "没有新消息哦，去找朋友聊聊天吧!"]
 }
@@ -37,7 +37,7 @@ class DemoViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "TBEmptyDataSet"
+        navigationItem.title = "EmptyDataSet Example"
         let backButton = UIBarButtonItem()
         backButton.title = "Back"
         navigationItem.backBarButtonItem = backButton

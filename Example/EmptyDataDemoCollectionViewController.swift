@@ -1,12 +1,13 @@
 //
 //  EmptyDataDemoCollectionViewController.swift
-//  TBEmptyDataSet
+//  TBEmptyDataSetExample
 //
 //  Created by 洪鑫 on 15/11/24.
 //  Copyright © 2015年 Teambition. All rights reserved.
 //
 
 import UIKit
+import TBEmptyDataSet
 
 class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmptyDataSetDataSource, TBEmptyDataSetDelegate {
     // MARK: - Structs
@@ -63,7 +64,7 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmpty
         let title = EmptyData.titles[indexPath.row]
         var attributes: [String : AnyObject]?
         if indexPath.row == 1 {
-            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(22.0), NSForegroundColorAttributeName: UIColor.grayColor()];
+            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(22.0), NSForegroundColorAttributeName: UIColor.grayColor()]
         } else if indexPath.row == 2 {
             attributes = [NSFontAttributeName: UIFont.systemFontOfSize(24.0), NSForegroundColorAttributeName: UIColor.grayColor()]
         }
@@ -74,9 +75,9 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmpty
         let description = EmptyData.descriptions[indexPath.row]
         var attributes: [String : AnyObject]?
         if indexPath.row == 1 {
-            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(17.0), NSForegroundColorAttributeName: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)];
+            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(17.0), NSForegroundColorAttributeName: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)]
         } else if indexPath.row == 2 {
-            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18.0), NSForegroundColorAttributeName: UIColor.purpleColor()];
+            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18.0), NSForegroundColorAttributeName: UIColor.purpleColor()]
         }
         return NSAttributedString(string: description, attributes: attributes)
     }

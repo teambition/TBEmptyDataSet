@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:TBEmptyDataSet.xcodeproj">
+      location = "self:/Users/hongxin/Developer/TBEmptyDataSet/Example/TBEmptyDataSetExample.xcodeproj">
    </FileRef>
 </Workspace>
