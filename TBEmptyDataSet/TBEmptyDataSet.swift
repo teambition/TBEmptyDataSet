@@ -46,9 +46,12 @@ extension UIScrollView: UIGestureRecognizerDelegate {
             if let newValue = newValue {
                 objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetDataSource, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
-                swizzleMethod(selector: Selectors.reloadData)
-                if isKindOfClass(UITableView.self) {
-                    swizzleMethod(selector: Selectors.endUpdates)
+                if self is UITableView {
+                    UITableView.tb_swizzleTableViewReloadData()
+                    UITableView.tb_swizzleTableViewEndUpdates()
+                }
+                if self is UICollectionView {
+                    UICollectionView.tb_swizzleCollectionViewReloadData()
                 }
             } else {
                 handlingInvalidEmptyDataSet()
@@ -70,29 +73,25 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     }
 
     public var emptyDataViewVisible: Bool {
-        get {
-            if let emptyDataView = objc_getAssociatedObject(self, &AssociatedKeys.emptyDataView) as? EmptyDataView {
-                return emptyDataView.hidden
-            }
-            return false
+        if let emptyDataView = objc_getAssociatedObject(self, &AssociatedKeys.emptyDataView) as? EmptyDataView {
+            return !emptyDataView.hidden
         }
+        return false
     }
 
     private var emptyDataView: EmptyDataView! {
-        get {
-            var emptyDataView = objc_getAssociatedObject(self, &AssociatedKeys.emptyDataView) as? EmptyDataView
-            if emptyDataView == nil {
-                emptyDataView = EmptyDataView(frame: frame)
-                emptyDataView!.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-                emptyDataView!.hidden = true
+        var emptyDataView = objc_getAssociatedObject(self, &AssociatedKeys.emptyDataView) as? EmptyDataView
+        if emptyDataView == nil {
+            emptyDataView = EmptyDataView(frame: frame)
+            emptyDataView!.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+            emptyDataView!.hidden = true
 
-                emptyDataView!.tapGesture = UITapGestureRecognizer(target: self, action: "didTapEmptyDataView:")
-                emptyDataView!.tapGesture.delegate = self
-                emptyDataView!.addGestureRecognizer(emptyDataView!.tapGesture)
-                setEmptyDataView(emptyDataView!)
-            }
-            return emptyDataView!
+            emptyDataView!.tapGesture = UITapGestureRecognizer(target: self, action: "didTapEmptyDataView:")
+            emptyDataView!.tapGesture.delegate = self
+            emptyDataView!.addGestureRecognizer(emptyDataView!.tapGesture)
+            setEmptyDataView(emptyDataView!)
         }
+        return emptyDataView!
     }
 
     // MARK: - Setters
@@ -290,50 +289,55 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     }
 
     // MARK: - Method swizzling
-    private func swizzleMethod(selector selector: Selector) {
-        struct SwizzledInfo {
-            static var methods: [String] = Array()
-        }
+    private class func tb_swizzleMethod(originalSelector: Selector, swizzledSelector: Selector) {
+        let originalMethod = class_getInstanceMethod(self, originalSelector)
+        let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
 
-        func swizzle(swizzledSelector swizzledSelector: Selector) {
-            let originalSelector = selector
-            let originalMethod = class_getInstanceMethod(self.dynamicType, originalSelector)
-            let swizzledMethod = class_getInstanceMethod(self.dynamicType, swizzledSelector)
+        let didAddMethod = class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
 
-            let className = NSStringFromClass(self.dynamicType)
-            let selectorName = NSStringFromSelector(originalSelector)
-            let method = className + "_" + selectorName
-            if SwizzledInfo.methods.contains(method) {
-                print("\(method) has already been swizzled!")
-                return
-            } else {
-                SwizzledInfo.methods.append(method)
-            }
-
+        if didAddMethod {
+            class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+        } else {
             method_exchangeImplementations(originalMethod, swizzledMethod)
         }
+    }
 
-        if !respondsToSelector(selector) {
-            return
+    private class func tb_swizzleTableViewReloadData() {
+        struct EmptyDataSetSwizzleToken {
+            static var onceToken: dispatch_once_t = 0
         }
+        dispatch_once(&EmptyDataSetSwizzleToken.onceToken) {
+            let originalSelector = Selectors.reloadData
+            let swizzledSelector = Selectors.tableViewSwizzledReloadData
 
-        if self.isKindOfClass(UITableView.self) {
-            var swizzledSelector: Selector?
-            if selector == Selectors.reloadData {
-                swizzledSelector = Selectors.tableViewSwizzledReloadData
-            } else if selector == Selectors.endUpdates {
-                swizzledSelector = Selectors.tableViewSwizzledEndUpdates
-            }
+            tb_swizzleMethod(originalSelector, swizzledSelector: swizzledSelector)
+            print(__FUNCTION__)
+        }
+    }
 
-            if let _ = swizzledSelector {
-                swizzle(swizzledSelector: swizzledSelector!)
-            } else {
-                return
-            }
-        } else if self.isKindOfClass(UICollectionView.self) {
-            swizzle(swizzledSelector: Selectors.collectionViewSwizzledReloadData)
-        } else {
-            return
+    private class func tb_swizzleTableViewEndUpdates() {
+        struct EmptyDataSetSwizzleToken {
+            static var onceToken: dispatch_once_t = 0
+        }
+        dispatch_once(&EmptyDataSetSwizzleToken.onceToken) {
+            let originalSelector = Selectors.endUpdates
+            let swizzledSelector = Selectors.tableViewSwizzledEndUpdates
+
+            tb_swizzleMethod(originalSelector, swizzledSelector: swizzledSelector)
+            print(__FUNCTION__)
+        }
+    }
+
+    private class func tb_swizzleCollectionViewReloadData() {
+        struct EmptyDataSetSwizzleToken {
+            static var onceToken: dispatch_once_t = 0
+        }
+        dispatch_once(&EmptyDataSetSwizzleToken.onceToken) {
+            let originalSelector = Selectors.reloadData
+            let swizzledSelector = Selectors.collectionViewSwizzledReloadData
+
+            tb_swizzleMethod(originalSelector, swizzledSelector: swizzledSelector)
+            print(__FUNCTION__)
         }
     }
 
