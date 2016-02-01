@@ -126,6 +126,7 @@ class EmptyDataView: UIView {
     }
 
     // MARK: - Configuration
+    // swiftlint:disable function_body_length
     func setConstraints() {
         let centerX = NSLayoutConstraint(item: contentView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0)
         let centerY = NSLayoutConstraint(item: contentView, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: verticalOffset)

@@ -25,12 +25,12 @@ struct Selectors {
 
 struct TableViewSelectors {
     static let dataSource: Selector = "dataSource"
-    static let numberOfSections: Selector = "numberOfSectionsInTableView"
+    static let numberOfSections: Selector = "numberOfSectionsInTableView:"
 }
 
 struct CollectionViewSelectors {
     static let dataSource: Selector = "dataSource"
-    static let numberOfSections: Selector = "numberOfSectionsInCollectionView"
+    static let numberOfSections: Selector = "numberOfSectionsInCollectionView:"
 }
 
 struct DefaultValues {

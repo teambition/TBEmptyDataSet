@@ -185,7 +185,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
             if let dataSource = tableView.dataSource {
                 if dataSource.respondsToSelector(TableViewSelectors.numberOfSections) {
                     let sections = dataSource.numberOfSectionsInTableView!(tableView)
-                    for section in 0...sections - 1 {
+                    for section in 0..<sections {
                         count += dataSource.tableView(tableView, numberOfRowsInSection: section)
                     }
                 }
@@ -194,7 +194,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
             if let dataSource = collectionView.dataSource {
                 if dataSource.respondsToSelector(CollectionViewSelectors.numberOfSections) {
                     let sections = dataSource.numberOfSectionsInCollectionView!(collectionView)
-                    for section in 0...sections - 1 {
+                    for section in 0..<sections {
                         count += dataSource.collectionView(collectionView, numberOfItemsInSection: section)
                     }
                 }
@@ -232,6 +232,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     }
 
     // MARK: - Reload
+    // swiftlint:disable function_body_length
     private func reloadEmptyDataSet() {
         if !emptyDataSetAvailable() {
             return
@@ -339,18 +340,15 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     func tb_tableViewSwizzledReloadData() {
         tb_tableViewSwizzledReloadData()
         reloadEmptyDataSet()
-        print("\(__FUNCTION__)")
     }
 
     func tb_tableViewSwizzledEndUpdates() {
         tb_tableViewSwizzledEndUpdates()
         reloadEmptyDataSet()
-        print("\(__FUNCTION__)")
     }
 
     func tb_collectionViewSwizzledReloadData() {
         tb_collectionViewSwizzledReloadData()
         reloadEmptyDataSet()
-        print("\(__FUNCTION__)")
     }
 }
