@@ -18,6 +18,7 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
     // MARK: - Properties
     var indexPath = NSIndexPath()
     private var isLoading = false
+    private var dataCount = 0
 
     // MARK: - View life cycle
     override func viewDidLoad() {
@@ -39,6 +40,7 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
     func fetchData(sender: AnyObject) {
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.5 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
+            self.dataCount = 7
             self.tableView.reloadData()
             self.refreshControl?.endRefreshing()
         }
@@ -53,23 +55,31 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
         }
     }
 
-    // MARK: - Table view data source
+    // MARK: - Table view data source and delegate
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return dataCount
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.reuseIdentifier)
         if cell == nil {
-            cell = UITableViewCell(style: .Default, reuseIdentifier: CellIdentifier.reuseIdentifier)
+            cell = UITableViewCell(style: .Value1, reuseIdentifier: CellIdentifier.reuseIdentifier)
         }
-        cell!.selectionStyle = .None
-
+        cell!.textLabel?.text = "Cell"
+        cell!.detailTextLabel?.text = "Click to delete"
         return cell!
+    }
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.beginUpdates()
+        dataCount--
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        tableView.endUpdates()
     }
 
     // MARK: - TBEmptyDataSet data source
