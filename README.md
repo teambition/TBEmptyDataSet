@@ -9,9 +9,19 @@ TBEmptyDataSet can be composed of an image, a title and a description, or you ca
 
 ##How To Get Started
 ###Carthage
-Specify "TBEmptyDataSet" in your Cartfile:
+Specify "TBEmptyDataSet" in your ```Cartfile```:
 ```ogdl 
 github "teambition/TBEmptyDataSet"
+```
+
+###CocoaPods
+Specify "TBEmptyDataSet" in your ```Podfile```:
+```ruby 
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+pod 'TBEmptyDataSet'
 ```
 
 ###Usage
