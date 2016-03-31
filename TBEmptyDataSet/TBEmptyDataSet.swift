@@ -243,8 +243,11 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         emptyDataSetWillAppear()
 
         if emptyDataView.superview == nil {
-            addSubview(emptyDataView)
-            bringSubviewToFront(emptyDataView)
+            if (self is UITableView || self is UICollectionView) && subviews.count > 1 {
+                insertSubview(emptyDataView, atIndex: 0)
+            } else {
+                addSubview(emptyDataView)
+            }
         }
         emptyDataView.resetEmptyDataView()
 
