@@ -86,7 +86,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
             emptyDataView!.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
             emptyDataView!.hidden = true
 
-            emptyDataView!.tapGesture = UITapGestureRecognizer(target: self, action: "didTapEmptyDataView:")
+            emptyDataView!.tapGesture = UITapGestureRecognizer(target: self, action: #selector(UIScrollView.didTapEmptyDataView(_:)))
             emptyDataView!.tapGesture.delegate = self
             emptyDataView!.addGestureRecognizer(emptyDataView!.tapGesture)
             setEmptyDataView(emptyDataView!)
@@ -175,10 +175,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     }
 
     private func cellsCount() -> Int {
-        if !self.respondsToSelector(Selectors.dataSource) {
-            return 0
-        }
-
         var count = 0
         if let tableView = self as? UITableView {
             if let dataSource = tableView.dataSource {
@@ -307,11 +303,11 @@ extension UIScrollView: UIGestureRecognizerDelegate {
             static var onceToken: dispatch_once_t = 0
         }
         dispatch_once(&EmptyDataSetSwizzleToken.onceToken) {
-            let originalSelector = Selectors.reloadData
+            let originalSelector = TableViewSelectors.reloadData
             let swizzledSelector = Selectors.tableViewSwizzledReloadData
 
             tb_swizzleMethod(originalSelector, swizzledSelector: swizzledSelector)
-            print(__FUNCTION__)
+            print(#function)
         }
     }
 
@@ -320,11 +316,11 @@ extension UIScrollView: UIGestureRecognizerDelegate {
             static var onceToken: dispatch_once_t = 0
         }
         dispatch_once(&EmptyDataSetSwizzleToken.onceToken) {
-            let originalSelector = Selectors.endUpdates
+            let originalSelector = TableViewSelectors.endUpdates
             let swizzledSelector = Selectors.tableViewSwizzledEndUpdates
 
             tb_swizzleMethod(originalSelector, swizzledSelector: swizzledSelector)
-            print(__FUNCTION__)
+            print(#function)
         }
     }
 
@@ -333,11 +329,11 @@ extension UIScrollView: UIGestureRecognizerDelegate {
             static var onceToken: dispatch_once_t = 0
         }
         dispatch_once(&EmptyDataSetSwizzleToken.onceToken) {
-            let originalSelector = Selectors.reloadData
+            let originalSelector = CollectionViewSelectors.reloadData
             let swizzledSelector = Selectors.collectionViewSwizzledReloadData
 
             tb_swizzleMethod(originalSelector, swizzledSelector: swizzledSelector)
-            print(__FUNCTION__)
+            print(#function)
         }
     }
 

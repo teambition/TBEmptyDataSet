@@ -26,7 +26,7 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
 
         navigationItem.title = "TableView"
         tableView.tableFooterView = UIView()
-        refreshControl?.addTarget(self, action: "fetchData:", forControlEvents: .ValueChanged)
+        refreshControl?.addTarget(self, action: #selector(EmptyDataDemoTableViewController.fetchData(_:)), forControlEvents: .ValueChanged)
 
         tableView.emptyDataSetDataSource = self
         tableView.emptyDataSetDelegate = self
@@ -77,7 +77,7 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         tableView.beginUpdates()
-        dataCount--
+        dataCount -= 1
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         tableView.endUpdates()
     }

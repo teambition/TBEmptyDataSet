@@ -15,22 +15,20 @@ struct AssociatedKeys {
 }
 
 struct Selectors {
-    static let dataSource: Selector = "dataSource"
-    static let reloadData: Selector = "reloadData"
-    static let endUpdates: Selector = "endUpdates"
-    static let tableViewSwizzledReloadData: Selector = "tb_tableViewSwizzledReloadData"
-    static let tableViewSwizzledEndUpdates: Selector = "tb_tableViewSwizzledEndUpdates"
-    static let collectionViewSwizzledReloadData: Selector = "tb_collectionViewSwizzledReloadData"
+    static let tableViewSwizzledReloadData = #selector(UIScrollView.tb_tableViewSwizzledReloadData)
+    static let tableViewSwizzledEndUpdates = #selector(UIScrollView.tb_tableViewSwizzledEndUpdates)
+    static let collectionViewSwizzledReloadData = #selector(UIScrollView.tb_collectionViewSwizzledReloadData)
 }
 
 struct TableViewSelectors {
-    static let dataSource: Selector = "dataSource"
-    static let numberOfSections: Selector = "numberOfSectionsInTableView:"
+    static let reloadData = #selector(UITableView.reloadData)
+    static let endUpdates = #selector(UITableView.endUpdates)
+    static let numberOfSections = #selector(UITableViewDataSource.numberOfSectionsInTableView(_:))
 }
 
 struct CollectionViewSelectors {
-    static let dataSource: Selector = "dataSource"
-    static let numberOfSections: Selector = "numberOfSectionsInCollectionView:"
+    static let reloadData = #selector(UICollectionView.reloadData)
+    static let numberOfSections = #selector(UICollectionViewDataSource.numberOfSectionsInCollectionView(_:))
 }
 
 struct DefaultValues {
