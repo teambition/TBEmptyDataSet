@@ -22,7 +22,6 @@ class EmptyDataView: UIView {
         let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.backgroundColor = UIColor.clearColor()
-        contentView.userInteractionEnabled = true
         contentView.alpha = 0
         return contentView
     }()
@@ -32,7 +31,6 @@ class EmptyDataView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = UIColor.clearColor()
         imageView.contentMode = .ScaleAspectFill
-        imageView.userInteractionEnabled = false
         self.contentView.addSubview(imageView)
         return imageView
         }()
@@ -139,6 +137,7 @@ class EmptyDataView: UIView {
             contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1, constant: 0))
             contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Width, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: customView.frame.width))
             contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Height, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: customView.frame.height))
+            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[\(ViewStrings.customView)]|", options: [], metrics: nil, views: [ViewStrings.customView: customView]))
         } else {
             var viewStrings = [String]()
             var views = [String: UIView]()

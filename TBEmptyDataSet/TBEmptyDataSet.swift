@@ -278,7 +278,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         emptyDataView.backgroundColor = emptyDataSetBackgroundColor()
         emptyDataView.hidden = false
         emptyDataView.clipsToBounds = true
-        emptyDataView.userInteractionEnabled = emptyDataSetTapEnabled()
+        emptyDataView.tapGesture.enabled = emptyDataSetTapEnabled()
         scrollEnabled = emptyDataSetScrollEnabled()
 
         emptyDataView.setConstraints()
