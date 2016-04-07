@@ -17,7 +17,7 @@ public protocol TBEmptyDataSetDataSource: NSObjectProtocol {
     func backgroundColorForEmptyDataSet(scrollView: UIScrollView!) -> UIColor?
 
     func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat
-    func verticalSpaceForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat
+    func verticalSpacesForEmptyDataSet(scrollView: UIScrollView!) -> [CGFloat]
 
     func customViewForEmptyDataSet(scrollView: UIScrollView!) -> UIView?
 }
@@ -124,8 +124,8 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         return emptyDataSetDataSource?.verticalOffsetForEmptyDataSet(self) ?? DefaultValues.verticalOffset
     }
 
-    private func emptyDataSetVerticalSpace() -> CGFloat {
-        return emptyDataSetDataSource?.verticalSpaceForEmptyDataSet(self) ?? DefaultValues.verticalSpace
+    private func emptyDataSetVerticalSpaces() -> [CGFloat] {
+        return emptyDataSetDataSource?.verticalSpacesForEmptyDataSet(self) ?? [DefaultValues.verticalSpace, DefaultValues.verticalSpace]
     }
 
     private func emptyDataSetCustomView() -> UIView? {
@@ -252,7 +252,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         emptyDataView.resetEmptyDataView()
 
         emptyDataView!.verticalOffset = emptyDataSetVerticalOffset()
-        emptyDataView!.verticalSpace = emptyDataSetVerticalSpace()
+        emptyDataView!.verticalSpaces = emptyDataSetVerticalSpaces()
 
         if let customView = emptyDataSetCustomView() {
             emptyDataView.customView = customView

@@ -33,8 +33,8 @@ public extension TBEmptyDataSetDataSource {
         return DefaultValues.verticalOffset
     }
 
-    func verticalSpaceForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-        return DefaultValues.verticalSpace
+    func verticalSpacesForEmptyDataSet(scrollView: UIScrollView!) -> [CGFloat] {
+        return [DefaultValues.verticalSpace, DefaultValues.verticalSpace]
     }
 
     func customViewForEmptyDataSet(scrollView: UIScrollView!) -> UIView? {

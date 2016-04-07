@@ -57,8 +57,8 @@ func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
     // return the vertical offset for EmptyDataSet, default is 0
 }
 
-func verticalSpaceForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-    // return the vertical space for EmptyDataSet, default is 12
+func verticalSpacesForEmptyDataSet(scrollView: UIScrollView!) -> [CGFloat] {
+    // return the vertical spaces from top to bottom for EmptyDataSet, default is [12, 12]
 }
 
 func customViewForEmptyDataSet(scrollView: UIScrollView!) -> UIView? {

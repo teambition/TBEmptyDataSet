@@ -116,6 +116,10 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
         return 0
     }
 
+    func verticalSpacesForEmptyDataSet(scrollView: UIScrollView!) -> [CGFloat] {
+        return [25, 8]
+    }
+
     func customViewForEmptyDataSet(scrollView: UIScrollView!) -> UIView? {
         if isLoading {
             let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)

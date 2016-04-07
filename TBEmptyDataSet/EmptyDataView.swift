@@ -77,7 +77,7 @@ class EmptyDataView: UIView {
     }
 
     var verticalOffset: CGFloat!
-    var verticalSpace: CGFloat!
+    var verticalSpaces: [CGFloat]!
 
     // MARK: - Helper
     private func removeAllConstraints() {
@@ -172,7 +172,8 @@ class EmptyDataView: UIView {
             for (index, viewString) in viewStrings.enumerate() {
                 verticalFormat += "[\(viewString)]"
                 if index != viewStrings.count - 1 {
-                    verticalFormat += "-\(verticalSpace)-"
+                    let verticalSpace = index < verticalSpaces.count ? verticalSpaces[index] : DefaultValues.verticalSpace
+                    verticalFormat += "-(\(verticalSpace))-"
                 }
             }
 
