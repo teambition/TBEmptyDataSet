@@ -118,6 +118,10 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmpty
 
     func customViewForEmptyDataSet(scrollView: UIScrollView!) -> UIView? {
         let loadingView: UIView = {
+            if indexPath.row == 2 {
+                return ExampleCustomView(frame: CGRect.zero)
+            }
+
             let loadingImageView = UIImageView(image: UIImage(named: "loading")!)
             let view = UIView(frame: loadingImageView.frame)
             view.addSubview(loadingImageView)
@@ -206,5 +210,43 @@ extension EmptyDataDemoCollectionViewController: UICollectionViewDelegateFlowLay
         }) { (context) -> Void in
 
         }
+    }
+}
+
+class ExampleCustomView: UIView {
+    private lazy var contentLabel: UILabel = {
+        let contentLabel = UILabel()
+        contentLabel.numberOfLines = 0
+        contentLabel.textColor = UIColor.whiteColor()
+        contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        return contentLabel
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+
+    private func commonInit() {
+        backgroundColor = UIColor.lightGrayColor()
+        layer.cornerRadius = 6
+
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorView.startAnimating()
+        contentLabel.text = "Loading... Please wait a moment...\n\n(This is a custom empty data view, which is using pure AutoLayout)"
+        addSubview(activityIndicatorView)
+        addSubview(contentLabel)
+
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-15-[activityIndicatorView]-20-[contentLabel]-15-|", options: [], metrics: nil, views: ["activityIndicatorView": activityIndicatorView, "contentLabel": contentLabel]))
+        addConstraint(NSLayoutConstraint(item: activityIndicatorView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0))
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-15-[contentLabel]-15-|", options: [], metrics: nil, views: ["contentLabel": contentLabel]))
+
+        translatesAutoresizingMaskIntoConstraints = false
     }
 }

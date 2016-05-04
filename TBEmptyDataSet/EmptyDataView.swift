@@ -64,14 +64,13 @@ class EmptyDataView: UIView {
     var tapGesture: UITapGestureRecognizer!
     var customView: UIView? {
         willSet {
-            if let _ = customView {
-                customView!.removeFromSuperview()
+            if let customView = customView {
+                customView.removeFromSuperview()
             }
         }
         didSet {
-            if let _ = customView {
-                customView!.translatesAutoresizingMaskIntoConstraints = false
-                contentView.addSubview(customView!)
+            if let customView = customView {
+                contentView.addSubview(customView)
             }
         }
     }
@@ -133,11 +132,22 @@ class EmptyDataView: UIView {
         addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[\(ViewStrings.contentView)]|", options: [], metrics: nil, views: [ViewStrings.contentView : contentView]))
 
         if let customView = customView {
-            contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .CenterX, relatedBy: .Equal, toItem: contentView, attribute: .CenterX, multiplier: 1, constant: 0))
-            contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1, constant: 0))
-            contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Width, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: customView.frame.width))
-            contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Height, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: customView.frame.height))
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[\(ViewStrings.customView)]|", options: [], metrics: nil, views: [ViewStrings.customView: customView]))
+            let translatesFrameIntoConstraints = customView.translatesAutoresizingMaskIntoConstraints
+            customView.translatesAutoresizingMaskIntoConstraints = false
+
+            if translatesFrameIntoConstraints {
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Width, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: customView.frame.width))
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Height, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: customView.frame.height))
+
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .CenterX, relatedBy: .Equal, toItem: contentView, attribute: .CenterX, multiplier: 1, constant: 0))
+                contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[\(ViewStrings.customView)]|", options: [], metrics: nil, views: [ViewStrings.customView: customView]))
+            } else {
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .CenterX, relatedBy: .Equal, toItem: contentView, attribute: .CenterX, multiplier: 1, constant: 0))
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Leading, relatedBy: .GreaterThanOrEqual, toItem: contentView, attribute: .Leading, multiplier: 1, constant: 0))
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Trailing, relatedBy: .LessThanOrEqual, toItem: contentView, attribute: .Trailing, multiplier: 1, constant: 0))
+
+                contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[\(ViewStrings.customView)]|", options: [], metrics: nil, views: [ViewStrings.customView: customView]))
+            }
         } else {
             var viewStrings = [String]()
             var views = [String: UIView]()
