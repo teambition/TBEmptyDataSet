@@ -145,6 +145,11 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         return emptyDataSetDelegate?.emptyDataSetScrollEnabled(self) ?? false
     }
 
+    // MARK: - Public
+    public func updateEmptyDataSetIfNeeded() {
+        reloadEmptyDataSet()
+    }
+
     // MARK: - View events
     func didTapEmptyDataView(sender: AnyObject) {
         emptyDataSetDelegate?.emptyDataSetDidTapView(self)

@@ -18,16 +18,17 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmpty
     // MARK: - Properties
     var indexPath = NSIndexPath()
     private var isLoading = false
+    private var dataCount = 0
 
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.title = "CollectionView"
+        collectionView!.backgroundColor = UIColor.whiteColor()
+
         collectionView!.emptyDataSetDataSource = self
         collectionView!.emptyDataSetDelegate = self
-        collectionView!.backgroundColor = UIColor.whiteColor()
-        collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: CellIdentifier.reuseIdentifier)
 
         if indexPath.row != 0 {
             loadData(self)
@@ -39,6 +40,7 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmpty
         isLoading = true
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
+            self.dataCount = 4
             self.isLoading = false
             self.collectionView!.reloadData()
         }
@@ -46,17 +48,34 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmpty
 
     // MARK: - Collection view data source
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 0
+        return 1
     }
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return dataCount
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CellIdentifier.reuseIdentifier, forIndexPath: indexPath)
 
+        let maskLayer = CAShapeLayer()
+        let maskRect = cell.bounds
+        maskLayer.frame = maskRect
+        let cornerRadii = CGSize(width: 5, height: 5)
+        let maskPath = UIBezierPath(roundedRect: maskRect, byRoundingCorners: .AllCorners, cornerRadii: cornerRadii)
+        maskLayer.path = maskPath.CGPath
+        cell.layer.mask = maskLayer
+
         return cell
+    }
+
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        self.dataCount -= 1
+        collectionView.performBatchUpdates({
+            self.collectionView?.deleteItemsAtIndexPaths([indexPath])
+            }) { (finished) in
+                self.collectionView?.updateEmptyDataSetIfNeeded()
+        }
     }
 
     // MARK: - TBEmptyDataSet data source
@@ -158,5 +177,34 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmpty
         let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
         alert.addAction(cancelAction)
         presentViewController(alert, animated: true, completion: nil)
+    }
+}
+
+extension EmptyDataDemoCollectionViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSize(width: 150, height: 90)
+    }
+
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return UIEdgeInsetsMake(20, 20, 20, 20)
+    }
+
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 20
+    }
+
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 20
+    }
+
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+
+        collectionViewLayout.invalidateLayout()
+        coordinator.animateAlongsideTransition({ (context) -> Void in
+
+        }) { (context) -> Void in
+
+        }
     }
 }

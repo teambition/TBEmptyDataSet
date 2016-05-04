@@ -99,6 +99,19 @@ func emptyDataSetDidDisappear(scrollView: UIScrollView!) {
     // do something
 }
 ```
+##### 3.  Data source events (inserting, deleting, and reloading)
+TBEmptyDataSet will update automatically when the data source of table view or collection view changes.
+
+Specifically, for UITableView, it updates when ```endUpdates()``` is called, for both UITableView and UICollectionView, it updates when ```reloadData()``` is called.
+
+In addition, you can call ```updateEmptyDataSetIfNeeded()``` to force an update immediately. For example:
+```swift
+collectionView.performBatchUpdates({
+    self.collectionView?.deleteItemsAtIndexPaths([indexPath])
+    }) { (finished) in
+        self.collectionView?.updateEmptyDataSetIfNeeded()
+}
+```
 
 ## Minimum Requirement
 iOS 8.0
