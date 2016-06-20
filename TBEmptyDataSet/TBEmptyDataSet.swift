@@ -40,11 +40,12 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     // MARK: - Properties
     public var emptyDataSetDataSource: TBEmptyDataSetDataSource? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.emptyDataSetDataSource) as? TBEmptyDataSetDataSource
+            let container = objc_getAssociatedObject(self, &AssociatedKeys.emptyDataSetDataSource) as? WeakObjectContainer
+            return container?.object as? TBEmptyDataSetDataSource
         }
         set {
             if let newValue = newValue {
-                objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetDataSource, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetDataSource, WeakObjectContainer(object: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
                 if self is UITableView {
                     UITableView.tb_swizzleTableViewReloadData()
@@ -61,11 +62,12 @@ extension UIScrollView: UIGestureRecognizerDelegate {
 
     public var emptyDataSetDelegate: TBEmptyDataSetDelegate? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.emptyDataSetDelegate) as? TBEmptyDataSetDelegate
+            let container = objc_getAssociatedObject(self, &AssociatedKeys.emptyDataSetDelegate) as? WeakObjectContainer
+            return container?.object as? TBEmptyDataSetDelegate
         }
         set {
             if let newValue = newValue {
-                objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetDelegate, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetDelegate, WeakObjectContainer(object: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             } else {
                 handlingInvalidEmptyDataSet()
             }
