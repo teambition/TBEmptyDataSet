@@ -10,7 +10,7 @@ import Foundation
 
 class WeakObjectContainer: NSObject {
     weak var object: AnyObject?
-    
+
     init(object: AnyObject) {
         self.object = object
         super.init()

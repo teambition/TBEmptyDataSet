@@ -190,7 +190,7 @@ extension EmptyDataDemoCollectionViewController: UICollectionViewDelegateFlowLay
     }
 
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(20, 20, 20, 20)
+        return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     }
 
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
