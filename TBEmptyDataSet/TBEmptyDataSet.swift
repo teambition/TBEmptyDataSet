@@ -53,6 +53,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
                 }
                 if self is UICollectionView {
                     UICollectionView.tb_swizzleCollectionViewReloadData()
+                    UICollectionView.tb_swizzleCollectionViewPerformBatchUpdates()
                 }
             } else {
                 handlingInvalidEmptyDataSet()
@@ -347,6 +348,19 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         }
     }
 
+    private class func tb_swizzleCollectionViewPerformBatchUpdates() {
+        struct EmptyDataSetSwizzleToken {
+            static var onceToken: dispatch_once_t = 0
+        }
+        dispatch_once(&EmptyDataSetSwizzleToken.onceToken) {
+            let originalSelector = CollectionViewSelectors.performBatchUpdates
+            let swizzledSelector = Selectors.collectionViewSwizzledPerformBatchUpdates
+
+            tb_swizzleMethod(originalSelector, swizzledSelector: swizzledSelector)
+            print(#function)
+        }
+    }
+
     func tb_tableViewSwizzledReloadData() {
         tb_tableViewSwizzledReloadData()
         reloadEmptyDataSet()
@@ -360,5 +374,12 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     func tb_collectionViewSwizzledReloadData() {
         tb_collectionViewSwizzledReloadData()
         reloadEmptyDataSet()
+    }
+
+    func tb_collectionViewSwizzledPerformBatchUpdates(updates: (() -> Void)?, completion: ((Bool) -> Void)?) {
+        tb_collectionViewSwizzledPerformBatchUpdates(updates) { [weak self](completed) in
+            completion?(completed)
+            self?.reloadEmptyDataSet()
+        }
     }
 }

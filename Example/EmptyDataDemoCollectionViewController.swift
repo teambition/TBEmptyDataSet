@@ -73,8 +73,9 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmpty
         self.dataCount -= 1
         collectionView.performBatchUpdates({
             self.collectionView?.deleteItemsAtIndexPaths([indexPath])
-            }) { (finished) in
-                self.collectionView?.updateEmptyDataSetIfNeeded()
+            }) { (completed) in
+                print("completed successfully: \(completed)")
+//                self.collectionView?.updateEmptyDataSetIfNeeded()
         }
     }
 

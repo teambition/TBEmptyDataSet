@@ -8,6 +8,7 @@
 
 import UIKit
 
+// swiftlint:disable variable_name
 struct AssociatedKeys {
     static var emptyDataSetDataSource = "emptyDataSetDataSource"
     static var emptyDataSetDelegate = "emptyDataSetDelegate"
@@ -18,6 +19,7 @@ struct Selectors {
     static let tableViewSwizzledReloadData = #selector(UIScrollView.tb_tableViewSwizzledReloadData)
     static let tableViewSwizzledEndUpdates = #selector(UIScrollView.tb_tableViewSwizzledEndUpdates)
     static let collectionViewSwizzledReloadData = #selector(UIScrollView.tb_collectionViewSwizzledReloadData)
+    static let collectionViewSwizzledPerformBatchUpdates = #selector(UIScrollView.tb_collectionViewSwizzledPerformBatchUpdates(_:completion:))
 }
 
 struct TableViewSelectors {
@@ -29,6 +31,7 @@ struct TableViewSelectors {
 struct CollectionViewSelectors {
     static let reloadData = #selector(UICollectionView.reloadData)
     static let numberOfSections = #selector(UICollectionViewDataSource.numberOfSectionsInCollectionView(_:))
+    static let performBatchUpdates = #selector(UICollectionView.performBatchUpdates(_:completion:))
 }
 
 struct DefaultValues {
