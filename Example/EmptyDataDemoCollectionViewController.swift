@@ -9,26 +9,26 @@
 import UIKit
 import TBEmptyDataSet
 
-class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmptyDataSetDataSource, TBEmptyDataSetDelegate {
+class EmptyDataDemoCollectionViewController: UICollectionViewController {
     // MARK: - Structs
-    private struct CellIdentifier {
+    fileprivate struct CellIdentifier {
         static let reuseIdentifier = "Cell"
     }
 
     // MARK: - Properties
-    var indexPath = NSIndexPath()
-    private var isLoading = false
-    private var dataCount = 0
+    var indexPath = IndexPath()
+    fileprivate var isLoading = false
+    fileprivate var dataCount = 0
 
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.title = "CollectionView"
-        collectionView!.backgroundColor = UIColor.whiteColor()
+        collectionView?.backgroundColor = UIColor.white
 
-        collectionView!.emptyDataSetDataSource = self
-        collectionView!.emptyDataSetDelegate = self
+        collectionView?.emptyDataSetDataSource = self
+        collectionView?.emptyDataSetDelegate = self
 
         if indexPath.row != 0 {
             loadData(self)
@@ -36,107 +36,108 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmpty
     }
 
     // MARK: - Helper
-    func loadData(sender: AnyObject) {
+    func loadData(_ sender: Any) {
         isLoading = true
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
+        let delayTime = DispatchTime.now() + Double(Int64(2 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) { () -> Void in
             self.dataCount = 4
             self.isLoading = false
-            self.collectionView!.reloadData()
+            self.collectionView?.reloadData()
         }
     }
 
     // MARK: - Collection view data source
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataCount
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CellIdentifier.reuseIdentifier, forIndexPath: indexPath)
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellIdentifier.reuseIdentifier, for: indexPath)
 
         let maskLayer = CAShapeLayer()
         let maskRect = cell.bounds
         maskLayer.frame = maskRect
         let cornerRadii = CGSize(width: 5, height: 5)
-        let maskPath = UIBezierPath(roundedRect: maskRect, byRoundingCorners: .AllCorners, cornerRadii: cornerRadii)
-        maskLayer.path = maskPath.CGPath
+        let maskPath = UIBezierPath(roundedRect: maskRect, byRoundingCorners: .allCorners, cornerRadii: cornerRadii)
+        maskLayer.path = maskPath.cgPath
         cell.layer.mask = maskLayer
 
         return cell
     }
 
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.dataCount -= 1
         collectionView.performBatchUpdates({
-            self.collectionView?.deleteItemsAtIndexPaths([indexPath])
+            self.collectionView?.deleteItems(at: [indexPath])
             }) { (completed) in
                 print("completed successfully: \(completed)")
-//                self.collectionView?.updateEmptyDataSetIfNeeded()
         }
     }
+}
 
+extension EmptyDataDemoCollectionViewController: TBEmptyDataSetDataSource, TBEmptyDataSetDelegate {
     // MARK: - TBEmptyDataSet data source
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString? {
+    func imageForEmptyDataSet(in scrollView: UIScrollView) -> UIImage? {
+        return EmptyData.images[indexPath.row]
+    }
+
+    func titleForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
         let title = EmptyData.titles[indexPath.row]
-        var attributes: [String : AnyObject]?
+        var attributes: [String: Any]?
         if indexPath.row == 1 {
-            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(22.0), NSForegroundColorAttributeName: UIColor.grayColor()]
+            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 22.0), NSForegroundColorAttributeName: UIColor.gray]
         } else if indexPath.row == 2 {
-            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(24.0), NSForegroundColorAttributeName: UIColor.grayColor()]
+            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 24.0), NSForegroundColorAttributeName: UIColor.gray]
         }
         return NSAttributedString(string: title, attributes: attributes)
     }
 
-    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString? {
+    func descriptionForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
         let description = EmptyData.descriptions[indexPath.row]
-        var attributes: [String : AnyObject]?
+        var attributes: [String: Any]?
         if indexPath.row == 1 {
-            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(17.0), NSForegroundColorAttributeName: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)]
+            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 17.0), NSForegroundColorAttributeName: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)]
         } else if indexPath.row == 2 {
-            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18.0), NSForegroundColorAttributeName: UIColor.purpleColor()]
+            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 18.0), NSForegroundColorAttributeName: UIColor.purple]
         }
         return NSAttributedString(string: description, attributes: attributes)
     }
 
-    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage? {
-        return EmptyData.images[indexPath.row]
+    func backgroundColorForEmptyDataSet(in scrollView: UIScrollView) -> UIColor? {
+        return UIColor(white: 0.95, alpha: 1)
     }
 
-    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+    func verticalOffsetForEmptyDataSet(in scrollView: UIScrollView) -> CGFloat {
         if let navigationBar = navigationController?.navigationBar {
             return -navigationBar.frame.height * 0.75
         }
         return 0
     }
 
-    func backgroundColorForEmptyDataSet(scrollView: UIScrollView!) -> UIColor? {
-        return UIColor(white: 0.95, alpha: 1)
-    }
-
-    func customViewForEmptyDataSet(scrollView: UIScrollView!) -> UIView? {
+    func customViewForEmptyDataSet(in scrollView: UIScrollView) -> UIView? {
         let loadingView: UIView = {
             if indexPath.row == 2 {
                 return ExampleCustomView(frame: CGRect.zero)
             }
 
-            let loadingImageView = UIImageView(image: UIImage(named: "loading")!)
+            let loadingImageView = UIImageView(image: #imageLiteral(resourceName: "loading"))
             let view = UIView(frame: loadingImageView.frame)
             view.addSubview(loadingImageView)
 
             let animation: CABasicAnimation = {
                 let animation = CABasicAnimation(keyPath: "transform")
-                animation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
-                animation.toValue = NSValue(CATransform3D: CATransform3DMakeRotation(CGFloat(M_PI_2), 0, 0, 1))
+                animation.fromValue = NSValue(caTransform3D: CATransform3DIdentity)
+                animation.toValue = NSValue(caTransform3D: CATransform3DMakeRotation(CGFloat(M_PI_2), 0, 0, 1))
                 animation.duration = 0.3
-                animation.cumulative = true
+                animation.isCumulative = true
                 animation.repeatCount = FLT_MAX
                 return animation
             }()
-            loadingImageView.layer.addAnimation(animation, forKey: "loading")
+            loadingImageView.layer.add(animation, forKey: "loading")
 
             return view
         }()
@@ -149,64 +150,64 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController, TBEmpty
     }
 
     // MARK: - TBEmptyDataSet delegate
-    func emptyDataSetScrollEnabled(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetShouldDisplay(in scrollView: UIScrollView) -> Bool {
         return true
     }
 
-    func emptyDataSetTapEnabled(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetTapEnabled(in scrollView: UIScrollView) -> Bool {
         return true
     }
 
-    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetScrollEnabled(in scrollView: UIScrollView) -> Bool {
         return true
     }
 
-    func emptyDataSetWillAppear(scrollView: UIScrollView!) {
+    func emptyDataSetDidTapView(in scrollView: UIScrollView) {
+        let alert = UIAlertController(title: nil, message: "Did Tap EmptyDataView!", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+    }
+
+    func emptyDataSetWillAppear(in scrollView: UIScrollView) {
         print("EmptyDataSet Will Appear!")
     }
 
-    func emptyDataSetDidAppear(scrollView: UIScrollView!) {
+    func emptyDataSetDidAppear(in scrollView: UIScrollView) {
         print("EmptyDataSet Did Appear!")
     }
 
-    func emptyDataSetWillDisappear(scrollView: UIScrollView!) {
+    func emptyDataSetWillDisappear(in scrollView: UIScrollView) {
         print("EmptyDataSet Will Disappear!")
     }
 
-    func emptyDataSetDidDisappear(scrollView: UIScrollView!) {
+    func emptyDataSetDidDisappear(in scrollView: UIScrollView) {
         print("EmptyDataSet Did Disappear!")
-    }
-
-    func emptyDataSetDidTapView(scrollView: UIScrollView!) {
-        let alert = UIAlertController(title: nil, message: "Did Tap EmptyDataView!", preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
-        alert.addAction(cancelAction)
-        presentViewController(alert, animated: true, completion: nil)
     }
 }
 
 extension EmptyDataDemoCollectionViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 150, height: 90)
     }
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     }
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 20
     }
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 20
     }
 
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
 
         collectionViewLayout.invalidateLayout()
-        coordinator.animateAlongsideTransition({ (context) -> Void in
+        coordinator.animate(alongsideTransition: { (context) -> Void in
 
         }) { (context) -> Void in
 
@@ -215,10 +216,10 @@ extension EmptyDataDemoCollectionViewController: UICollectionViewDelegateFlowLay
 }
 
 class ExampleCustomView: UIView {
-    private lazy var contentLabel: UILabel = {
+    fileprivate lazy var contentLabel: UILabel = {
         let contentLabel = UILabel()
         contentLabel.numberOfLines = 0
-        contentLabel.textColor = UIColor.whiteColor()
+        contentLabel.textColor = UIColor.white
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         return contentLabel
     }()
@@ -233,20 +234,20 @@ class ExampleCustomView: UIView {
         commonInit()
     }
 
-    private func commonInit() {
-        backgroundColor = UIColor.lightGrayColor()
+    fileprivate func commonInit() {
+        backgroundColor = UIColor.lightGray
         layer.cornerRadius = 6
 
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.startAnimating()
         contentLabel.text = "Loading... Please wait a moment...\n\n(This is a custom empty data view, which is using pure AutoLayout)"
         addSubview(activityIndicatorView)
         addSubview(contentLabel)
 
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-15-[activityIndicatorView]-20-[contentLabel]-15-|", options: [], metrics: nil, views: ["activityIndicatorView": activityIndicatorView, "contentLabel": contentLabel]))
-        addConstraint(NSLayoutConstraint(item: activityIndicatorView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0))
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-15-[contentLabel]-15-|", options: [], metrics: nil, views: ["contentLabel": contentLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[activityIndicatorView]-20-[contentLabel]-15-|", options: [], metrics: nil, views: ["activityIndicatorView": activityIndicatorView, "contentLabel": contentLabel]))
+        addConstraint(NSLayoutConstraint(item: activityIndicatorView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[contentLabel]-15-|", options: [], metrics: nil, views: ["contentLabel": contentLabel]))
 
         translatesAutoresizingMaskIntoConstraints = false
     }

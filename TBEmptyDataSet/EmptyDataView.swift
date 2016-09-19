@@ -8,8 +8,8 @@
 
 import UIKit
 
-class EmptyDataView: UIView {
-    private struct ViewStrings {
+internal class EmptyDataView: UIView {
+    fileprivate struct ViewStrings {
         static let contentView = "contentView"
         static let imageView = "imageView"
         static let titleLabel = "titleLabel"
@@ -18,51 +18,50 @@ class EmptyDataView: UIView {
     }
 
     // MARK: - Properties
-    lazy var contentView: UIView = {
+    internal lazy var contentView: UIView = {
         let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.backgroundColor = UIColor.clearColor()
+        contentView.backgroundColor = UIColor.clear
         contentView.alpha = 0
         return contentView
     }()
 
-    lazy var imageView: UIImageView = { [unowned self] in
+    internal lazy var imageView: UIImageView = { [unowned self] in
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = UIColor.clearColor()
-        imageView.contentMode = .ScaleAspectFill
+        imageView.backgroundColor = UIColor.clear
+        imageView.contentMode = .scaleAspectFill
         self.contentView.addSubview(imageView)
         return imageView
-        }()
+    }()
 
-    lazy var titleLabel: UILabel = { [unowned self] in
+    internal lazy var titleLabel: UILabel = { [unowned self] in
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.backgroundColor = UIColor.clearColor()
-        titleLabel.font = UIFont.systemFontOfSize(27)
+        titleLabel.backgroundColor = UIColor.clear
+        titleLabel.font = UIFont.systemFont(ofSize: 27)
         titleLabel.textColor = UIColor(white: 0.6, alpha: 1)
-        titleLabel.textAlignment = .Center
-        titleLabel.lineBreakMode = .ByWordWrapping
+        titleLabel.textAlignment = .center
+        titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.numberOfLines = 0
         self.contentView.addSubview(titleLabel)
         return titleLabel
-        }()
+    }()
 
-    lazy var descriptionLabel: UILabel = { [unowned self] in
+    internal lazy var descriptionLabel: UILabel = { [unowned self] in
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.backgroundColor = UIColor.clearColor()
-        descriptionLabel.font = UIFont.systemFontOfSize(17)
+        descriptionLabel.backgroundColor = UIColor.clear
+        descriptionLabel.font = UIFont.systemFont(ofSize: 17)
         descriptionLabel.textColor = UIColor(white: 0.6, alpha: 1)
-        descriptionLabel.textAlignment = .Center
-        descriptionLabel.lineBreakMode = .ByWordWrapping
+        descriptionLabel.textAlignment = .center
+        descriptionLabel.lineBreakMode = .byWordWrapping
         descriptionLabel.numberOfLines = 0
         self.contentView.addSubview(descriptionLabel)
         return descriptionLabel
-        }()
+    }()
 
-    var tapGesture: UITapGestureRecognizer!
-    var customView: UIView? {
+    internal var customView: UIView? {
         willSet {
             if let customView = customView {
                 customView.removeFromSuperview()
@@ -74,26 +73,32 @@ class EmptyDataView: UIView {
             }
         }
     }
-
-    var verticalOffset: CGFloat!
-    var verticalSpaces: [CGFloat]!
+    internal var tapGesture: UITapGestureRecognizer?
+    internal var verticalOffset = DefaultValues.verticalOffset
+    internal var verticalSpaces = DefaultValues.verticalSpaces
 
     // MARK: - Helper
-    private func removeAllConstraints() {
-        contentView.removeConstraints(contentView.constraints)
-        removeConstraints(constraints)
-    }
-
-    private func shouldShowImageView() -> Bool {
+    fileprivate func shouldShowImageView() -> Bool {
         return imageView.image != nil
     }
 
-    private func shouldShowTitleLabel() -> Bool {
-        return titleLabel.attributedText?.length > 0
+    fileprivate func shouldShowTitleLabel() -> Bool {
+        if let title = titleLabel.attributedText {
+            return title.length > 0
+        }
+        return false
     }
 
-    private func shouldShowDescriptionLabel() -> Bool {
-        return descriptionLabel.attributedText?.length > 0
+    fileprivate func shouldShowDescriptionLabel() -> Bool {
+        if let description = descriptionLabel.attributedText {
+            return description.length > 0
+        }
+        return false
+    }
+
+    fileprivate func removeAllConstraints() {
+        contentView.removeConstraints(contentView.constraints)
+        removeConstraints(constraints)
     }
 
     // MARK: - View life cycle
@@ -108,45 +113,36 @@ class EmptyDataView: UIView {
 
     override func didMoveToSuperview() {
         frame = super.bounds
-        UIView.animateWithDuration(0.25) { () -> Void in
+        UIView.animate(withDuration: 0.25, animations: { () -> Void in
             self.contentView.alpha = 1
-        }
+        })
     }
 
-    func resetEmptyDataView() {
-        imageView.image = nil
-        titleLabel.attributedText = nil
-        descriptionLabel.attributedText = nil
-        customView = nil
-
-        removeAllConstraints()
-    }
-
-    // MARK: - Configuration
+    // MARK: - Actions
     // swiftlint:disable function_body_length
-    func setConstraints() {
-        let centerX = NSLayoutConstraint(item: contentView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0)
-        let centerY = NSLayoutConstraint(item: contentView, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: verticalOffset)
+    internal func setConstraints() {
+        let centerX = NSLayoutConstraint(item: contentView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0)
+        let centerY = NSLayoutConstraint(item: contentView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: verticalOffset)
         addConstraint(centerX)
         addConstraint(centerY)
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[\(ViewStrings.contentView)]|", options: [], metrics: nil, views: [ViewStrings.contentView : contentView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(ViewStrings.contentView)]|", options: [], metrics: nil, views: [ViewStrings.contentView : contentView]))
 
         if let customView = customView {
             let translatesFrameIntoConstraints = customView.translatesAutoresizingMaskIntoConstraints
             customView.translatesAutoresizingMaskIntoConstraints = false
 
             if translatesFrameIntoConstraints {
-                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Width, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: customView.frame.width))
-                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Height, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: customView.frame.height))
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .width, relatedBy: .equal, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: customView.frame.width))
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .height, relatedBy: .equal, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: customView.frame.height))
 
-                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .CenterX, relatedBy: .Equal, toItem: contentView, attribute: .CenterX, multiplier: 1, constant: 0))
-                contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[\(ViewStrings.customView)]|", options: [], metrics: nil, views: [ViewStrings.customView: customView]))
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
+                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[\(ViewStrings.customView)]|", options: [], metrics: nil, views: [ViewStrings.customView: customView]))
             } else {
-                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .CenterX, relatedBy: .Equal, toItem: contentView, attribute: .CenterX, multiplier: 1, constant: 0))
-                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Leading, relatedBy: .GreaterThanOrEqual, toItem: contentView, attribute: .Leading, multiplier: 1, constant: 0))
-                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .Trailing, relatedBy: .LessThanOrEqual, toItem: contentView, attribute: .Trailing, multiplier: 1, constant: 0))
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .leading, relatedBy: .greaterThanOrEqual, toItem: contentView, attribute: .leading, multiplier: 1, constant: 0))
+                contentView.addConstraint(NSLayoutConstraint(item: customView, attribute: .trailing, relatedBy: .lessThanOrEqual, toItem: contentView, attribute: .trailing, multiplier: 1, constant: 0))
 
-                contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[\(ViewStrings.customView)]|", options: [], metrics: nil, views: [ViewStrings.customView: customView]))
+                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[\(ViewStrings.customView)]|", options: [], metrics: nil, views: [ViewStrings.customView: customView]))
             }
         } else {
             var viewStrings = [String]()
@@ -157,14 +153,14 @@ class EmptyDataView: UIView {
                 viewStrings.append(viewString)
                 views[viewString] = imageView
 
-                contentView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .CenterX, relatedBy: .Equal, toItem: contentView, attribute: .CenterX, multiplier: 1, constant: 0))
+                contentView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
             }
 
             if shouldShowTitleLabel() {
                 let viewString = ViewStrings.titleLabel
                 viewStrings.append(viewString)
                 views[viewString] = titleLabel
-                contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[\(ViewStrings.titleLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.titleLabel : titleLabel]))
+                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[\(ViewStrings.titleLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.titleLabel : titleLabel]))
             } else {
                 titleLabel.removeFromSuperview()
             }
@@ -173,13 +169,13 @@ class EmptyDataView: UIView {
                 let viewString = ViewStrings.descriptionLabel
                 viewStrings.append(viewString)
                 views[viewString] = descriptionLabel
-                contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[\(ViewStrings.descriptionLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.descriptionLabel : descriptionLabel]))
+                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[\(ViewStrings.descriptionLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.descriptionLabel : descriptionLabel]))
             } else {
                 descriptionLabel.removeFromSuperview()
             }
 
             var verticalFormat = String()
-            for (index, viewString) in viewStrings.enumerate() {
+            for (index, viewString) in viewStrings.enumerated() {
                 verticalFormat += "[\(viewString)]"
                 if index != viewStrings.count - 1 {
                     let verticalSpace = index < verticalSpaces.count ? verticalSpaces[index] : DefaultValues.verticalSpace
@@ -188,8 +184,25 @@ class EmptyDataView: UIView {
             }
 
             if !verticalFormat.isEmpty {
-                contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|\(verticalFormat)|", options: [], metrics: nil, views: views))
+                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|\(verticalFormat)|", options: [], metrics: nil, views: views))
             }
         }
+    }
+
+    internal func prepareForDisplay() {
+        imageView.image = nil
+        titleLabel.attributedText = nil
+        descriptionLabel.attributedText = nil
+        customView = nil
+        removeAllConstraints()
+    }
+
+    internal func reset() {
+        imageView.image = nil
+        titleLabel.attributedText = nil
+        descriptionLabel.attributedText = nil
+        customView = nil
+        tapGesture = nil
+        removeAllConstraints()
     }
 }

@@ -9,16 +9,16 @@
 import UIKit
 import TBEmptyDataSet
 
-class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDataSource, TBEmptyDataSetDelegate {
+class EmptyDataDemoTableViewController: UITableViewController {
     // MARK: - Structs
-    private struct CellIdentifier {
+    fileprivate struct CellIdentifier {
         static let reuseIdentifier = "Cell"
     }
 
     // MARK: - Properties
-    var indexPath = NSIndexPath()
-    private var isLoading = false
-    private var dataCount = 0
+    var indexPath = IndexPath()
+    fileprivate var isLoading = false
+    fileprivate var dataCount = 0
 
     // MARK: - View life cycle
     override func viewDidLoad() {
@@ -26,7 +26,7 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
 
         navigationItem.title = "TableView"
         tableView.tableFooterView = UIView()
-        refreshControl?.addTarget(self, action: #selector(EmptyDataDemoTableViewController.fetchData(_:)), forControlEvents: .ValueChanged)
+        refreshControl?.addTarget(self, action: #selector(fetchData(_:)), for: .valueChanged)
 
         tableView.emptyDataSetDataSource = self
         tableView.emptyDataSetDelegate = self
@@ -37,92 +37,94 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
     }
 
     // MARK: - Helper
-    func fetchData(sender: AnyObject) {
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.5 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
+    func fetchData(_ sender: Any) {
+        let delayTime = DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) { () -> Void in
             self.dataCount = 7
             self.tableView.reloadData()
             self.refreshControl?.endRefreshing()
         }
     }
 
-    func loadData(sender: AnyObject) {
+    func loadData(_ sender: Any) {
         isLoading = true
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.75 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
+        let delayTime = DispatchTime.now() + Double(Int64(1.75 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) { () -> Void in
             self.isLoading = false
             self.tableView.reloadData()
         }
     }
 
     // MARK: - Table view data source and delegate
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataCount
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.reuseIdentifier)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.reuseIdentifier)
         if cell == nil {
-            cell = UITableViewCell(style: .Value1, reuseIdentifier: CellIdentifier.reuseIdentifier)
+            cell = UITableViewCell(style: .value1, reuseIdentifier: CellIdentifier.reuseIdentifier)
         }
         cell!.textLabel?.text = "Cell"
         cell!.detailTextLabel?.text = "Click to delete"
         return cell!
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         tableView.beginUpdates()
         dataCount -= 1
-        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        tableView.deleteRows(at: [indexPath], with: .fade)
         tableView.endUpdates()
     }
+}
 
+extension EmptyDataDemoTableViewController: TBEmptyDataSetDataSource, TBEmptyDataSetDelegate {
     // MARK: - TBEmptyDataSet data source
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString? {
+    func imageForEmptyDataSet(in scrollView: UIScrollView) -> UIImage? {
+        return EmptyData.images[indexPath.row]
+    }
+
+    func titleForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
         let title = EmptyData.titles[indexPath.row]
-        var attributes: [String : AnyObject]?
+        var attributes: [String: Any]?
         if indexPath.row == 1 {
-            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(22.0), NSForegroundColorAttributeName: UIColor.grayColor()]
+            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 22.0), NSForegroundColorAttributeName: UIColor.gray]
         } else if indexPath.row == 2 {
-            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(24.0), NSForegroundColorAttributeName: UIColor.grayColor()]
+            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 24.0), NSForegroundColorAttributeName: UIColor.gray]
         }
         return NSAttributedString(string: title, attributes: attributes)
     }
 
-    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString? {
+    func descriptionForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
         let description = EmptyData.descriptions[indexPath.row]
-        var attributes: [String : AnyObject]?
+        var attributes: [String: Any]?
         if indexPath.row == 1 {
-            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(17.0), NSForegroundColorAttributeName: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)]
+            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 17.0), NSForegroundColorAttributeName: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)]
         } else if indexPath.row == 2 {
-            attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18.0), NSForegroundColorAttributeName: UIColor.purpleColor()]
+            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 18.0), NSForegroundColorAttributeName: UIColor.purple]
         }
         return NSAttributedString(string: description, attributes: attributes)
     }
 
-    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage? {
-        return EmptyData.images[indexPath.row]
-    }
-
-    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+    func verticalOffsetForEmptyDataSet(in scrollView: UIScrollView) -> CGFloat {
         if let navigationBar = navigationController?.navigationBar {
             return -navigationBar.frame.height * 0.75
         }
         return 0
     }
 
-    func verticalSpacesForEmptyDataSet(scrollView: UIScrollView!) -> [CGFloat] {
+    func verticalSpacesForEmptyDataSet(in scrollView: UIScrollView) -> [CGFloat] {
         return [25, 8]
     }
 
-    func customViewForEmptyDataSet(scrollView: UIScrollView!) -> UIView? {
+    func customViewForEmptyDataSet(in scrollView: UIScrollView) -> UIView? {
         if isLoading {
-            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             activityIndicator.startAnimating()
             return activityIndicator
         }
@@ -130,38 +132,38 @@ class EmptyDataDemoTableViewController: UITableViewController, TBEmptyDataSetDat
     }
 
     // MARK: - TBEmptyDataSet delegate
-    func emptyDataSetScrollEnabled(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetShouldDisplay(in scrollView: UIScrollView) -> Bool {
         return true
     }
 
-    func emptyDataSetTapEnabled(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetTapEnabled(in scrollView: UIScrollView) -> Bool {
         return true
     }
 
-    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetScrollEnabled(in scrollView: UIScrollView) -> Bool {
         return true
     }
 
-    func emptyDataSetWillAppear(scrollView: UIScrollView!) {
-         print("EmptyDataSet Will Appear!")
+    func emptyDataSetDidTapView(in scrollView: UIScrollView) {
+        let alert = UIAlertController(title: nil, message: "Did Tap EmptyDataView!", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
     }
 
-    func emptyDataSetDidAppear(scrollView: UIScrollView!) {
+    func emptyDataSetWillAppear(in scrollView: UIScrollView) {
+        print("EmptyDataSet Will Appear!")
+    }
+
+    func emptyDataSetDidAppear(in scrollView: UIScrollView) {
         print("EmptyDataSet Did Appear!")
     }
 
-    func emptyDataSetWillDisappear(scrollView: UIScrollView!) {
+    func emptyDataSetWillDisappear(in scrollView: UIScrollView) {
         print("EmptyDataSet Will Disappear!")
     }
 
-    func emptyDataSetDidDisappear(scrollView: UIScrollView!) {
+    func emptyDataSetDidDisappear(in scrollView: UIScrollView) {
         print("EmptyDataSet Did Disappear!")
-    }
-
-    func emptyDataSetDidTapView(scrollView: UIScrollView!) {
-        let alert = UIAlertController(title: nil, message: "Did Tap EmptyDataView!", preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
-        alert.addAction(cancelAction)
-        presentViewController(alert, animated: true, completion: nil)
     }
 }

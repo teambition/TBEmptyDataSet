@@ -1,12 +1,29 @@
 disabled_rules: # rule identifiers to exclude from running
   - line_length
   - nesting
+  - variable_name_min_length
+  - cyclomatic_complexity
 included: # paths to include during linting. `--path` is ignored if present. takes precendence over `excluded`.
 excluded: # paths to ignore during linting. overridden by `included`.
   - Carthage
-# parameterized rules can be customized from this configuration file
-line_length: 150
 # parameterized rules are first parameterized as a warning level, then error level.
+line_length: 150
+type_name:
+  min_length: 3 # only warning
+  max_length: # warning and error
+    warning: 100
+    error: 200
+
+function_parameter_count: 10
+function_body_length:
+  - 100
+  - 200
 type_body_length:
   - 300 # warning
   - 400 # error
+file_length:
+  - 1000 # warning
+  - 1500 # error
+variable_name:
+  min_length: 2
+  max_length: 40
