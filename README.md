@@ -33,85 +33,79 @@ tableView.emptyDataSetDelegate = self
 ##### 2.  Implement the data source and delegate
 Data source functions:
 ```swift 
-func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage? {
+func imageForEmptyDataSet(in scrollView: UIScrollView) -> UIImage? {
     // return the image for EmptyDataSet
 }
 
-func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString? {
+func titleForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
     // return the title for EmptyDataSet
 }
 
-func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString? {
+func descriptionForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
     // return the description for EmptyDataSet
 }
 
-func imageTintColorForEmptyDataSet(scrollView: UIScrollView!) -> UIColor? {
+func imageTintColorForEmptyDataSet(in scrollView: UIScrollView) -> UIColor? {
     // return the image tint color for EmptyDataSet
 }
 
-func backgroundColorForEmptyDataSet(scrollView: UIScrollView!) -> UIColor? {
+func backgroundColorForEmptyDataSet(in scrollView: UIScrollView) -> UIColor? {
     // return the backgroundColor for EmptyDataSet
 }
 
-func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+func verticalOffsetForEmptyDataSet(in scrollView: UIScrollView) -> CGFloat {
     // return the vertical offset for EmptyDataSet, default is 0
 }
 
-func verticalSpacesForEmptyDataSet(scrollView: UIScrollView!) -> [CGFloat] {
+func verticalSpacesForEmptyDataSet(in scrollView: UIScrollView) -> [CGFloat] {
     // return the vertical spaces from top to bottom for EmptyDataSet, default is [12, 12]
 }
 
-func customViewForEmptyDataSet(scrollView: UIScrollView!) -> UIView? {
+func customViewForEmptyDataSet(in scrollView: UIScrollView) -> UIView? {
     // return an UIView instance for EmptyDataSet
 }
 ``` 
 Delegate functions:
 ```swift
-func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+func emptyDataSetShouldDisplay(in scrollView: UIScrollView) -> Bool {
     // should display EmptyDataSet or not, default is true
 }
 
-func emptyDataSetTapEnabled(scrollView: UIScrollView!) -> Bool {
+func emptyDataSetTapEnabled(in scrollView: UIScrollView) -> Bool {
     // enable tap gesture or not, default is true
 }
 
-func emptyDataSetScrollEnabled(scrollView: UIScrollView!) -> Bool {
+func emptyDataSetScrollEnabled(in scrollView: UIScrollView) -> Bool {
     // scrollView can scroll or not, default is false
 }
 
-func emptyDataSetDidTapView(scrollView: UIScrollView!) {
+func emptyDataSetDidTapEmptyView(in scrollView: UIScrollView) {
     // do something
 }
 
-func emptyDataSetWillAppear(scrollView: UIScrollView!) {
+func emptyDataSetWillAppear(in scrollView: UIScrollView) {
     // do something
 }
 
-func emptyDataSetDidAppear(scrollView: UIScrollView!) {
+func emptyDataSetDidAppear(in scrollView: UIScrollView) {
     // do something
 }
 
-func emptyDataSetWillDisappear(scrollView: UIScrollView!) {
+func emptyDataSetWillDisappear(in scrollView: UIScrollView) {
     // do something
 }
 
-func emptyDataSetDidDisappear(scrollView: UIScrollView!) {
+func emptyDataSetDidDisappear(in scrollView: UIScrollView) {
     // do something
 }
 ```
-##### 3.  Data source events (inserting, deleting, and reloading)
+##### 3.  Data source events (inserting, deleting, reloading, etc.)
 TBEmptyDataSet will update automatically when the data source of table view or collection view changes.
 
-Specifically, for UITableView, it updates when ```endUpdates()``` is called, for both UITableView and UICollectionView, it updates when ```reloadData()``` is called.
-
-In addition, you can call ```updateEmptyDataSetIfNeeded()``` to force an update immediately. For example:
-```swift
-collectionView.performBatchUpdates({
-    self.collectionView?.deleteItemsAtIndexPaths([indexPath])
-    }) { (finished) in
-        self.collectionView?.updateEmptyDataSetIfNeeded()
-}
-```
+To be specific:
+* For UITableView, it updates when ```endUpdates()``` is called.
+* For UICollectionView, it updates when ```performBatchUpdates(_:completion:)``` is completed.
+* For both UITableView and UICollectionView, it updates when ```reloadData()``` is called.
 
 ## Minimum Requirement
 iOS 8.0

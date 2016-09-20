@@ -74,7 +74,7 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController {
         collectionView.performBatchUpdates({
             self.collectionView?.deleteItems(at: [indexPath])
             }) { (completed) in
-                print("completed successfully: \(completed)")
+
         }
     }
 }
@@ -162,7 +162,7 @@ extension EmptyDataDemoCollectionViewController: TBEmptyDataSetDataSource, TBEmp
         return true
     }
 
-    func emptyDataSetDidTapView(in scrollView: UIScrollView) {
+    func emptyDataSetDidTapEmptyView(in scrollView: UIScrollView) {
         let alert = UIAlertController(title: nil, message: "Did Tap EmptyDataView!", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alert.addAction(cancelAction)

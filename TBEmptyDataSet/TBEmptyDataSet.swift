@@ -115,7 +115,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
 
     // MARK: - Helper
     func didTapEmptyDataView(_ sender: Any) {
-        emptyDataSetDelegate?.emptyDataSetDidTapView(in: self)
+        emptyDataSetDelegate?.emptyDataSetDidTapEmptyView(in: self)
     }
 
     fileprivate func makeEmptyDataView() -> EmptyDataView {
