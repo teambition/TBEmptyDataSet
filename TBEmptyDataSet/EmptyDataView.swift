@@ -149,14 +149,22 @@ internal class EmptyDataView: UIView {
             var views = [String: UIView]()
 
             if shouldShowImageView() {
+                if imageView.superview == nil {
+                    contentView.addSubview(imageView)
+                }
                 let viewString = ViewStrings.imageView
                 viewStrings.append(viewString)
                 views[viewString] = imageView
 
                 contentView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
+            } else {
+                imageView.removeFromSuperview()
             }
 
             if shouldShowTitleLabel() {
+                if titleLabel.superview == nil {
+                    contentView.addSubview(titleLabel)
+                }
                 let viewString = ViewStrings.titleLabel
                 viewStrings.append(viewString)
                 views[viewString] = titleLabel
@@ -166,6 +174,9 @@ internal class EmptyDataView: UIView {
             }
 
             if shouldShowDescriptionLabel() {
+                if descriptionLabel.superview == nil {
+                    contentView.addSubview(descriptionLabel)
+                }
                 let viewString = ViewStrings.descriptionLabel
                 viewStrings.append(viewString)
                 views[viewString] = descriptionLabel
