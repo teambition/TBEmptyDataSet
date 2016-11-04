@@ -12,11 +12,12 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     // MARK: - Properties
     public var emptyDataSetDataSource: TBEmptyDataSetDataSource? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.emptyDataSetDataSource) as? TBEmptyDataSetDataSource
+            let container = objc_getAssociatedObject(self, &AssociatedKeys.emptyDataSetDataSource) as? WeakObjectContainer
+            return container?.object as? TBEmptyDataSetDataSource
         }
         set {
             if let newValue = newValue {
-                objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetDataSource, newValue, .OBJC_ASSOCIATION_ASSIGN)
+                objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetDataSource, WeakObjectContainer(object: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
                 switch self {
                 case is UITableView:
@@ -36,11 +37,12 @@ extension UIScrollView: UIGestureRecognizerDelegate {
 
     public var emptyDataSetDelegate: TBEmptyDataSetDelegate? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.emptyDataSetDelegate) as? TBEmptyDataSetDelegate
+            let container = objc_getAssociatedObject(self, &AssociatedKeys.emptyDataSetDelegate) as? WeakObjectContainer
+            return container?.object as? TBEmptyDataSetDelegate
         }
         set {
             if let newValue = newValue {
-                objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetDelegate, newValue, .OBJC_ASSOCIATION_ASSIGN)
+                objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetDelegate, WeakObjectContainer(object: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             } else {
                 handlingInvalidEmptyDataSet()
             }
@@ -52,7 +54,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
             return objc_getAssociatedObject(self, &AssociatedKeys.emptyDataView) as? EmptyDataView
         }
         set {
-            objc_setAssociatedObject(self, &AssociatedKeys.emptyDataView, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(self, &AssociatedKeys.emptyDataView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
