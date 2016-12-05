@@ -182,7 +182,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         return super.gestureRecognizerShouldBegin(gestureRecognizer)
     }
 
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if let emptyDataView = emptyDataView, gestureRecognizer == emptyDataView.tapGesture || otherGestureRecognizer == emptyDataView.tapGesture {
             return true
         }
