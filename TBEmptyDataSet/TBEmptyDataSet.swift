@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension UIScrollView: UIGestureRecognizerDelegate {
+extension UIScrollView {
     // MARK: - Properties
     public var emptyDataSetDataSource: TBEmptyDataSetDataSource? {
         get {
@@ -125,7 +125,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         emptyDataView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         emptyDataView.isHidden = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapEmptyDataView(_:)))
-        tapGesture.delegate = self
         emptyDataView.addGestureRecognizer(tapGesture)
         emptyDataView.tapGesture = tapGesture
         return emptyDataView
@@ -172,21 +171,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         isScrollEnabled = true
 
         emptyDataSetDelegate?.emptyDataSetDidDisappear(in: self)
-    }
-
-    // MARK: - UIGestureRecognizer delegate
-    override open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer.view is EmptyDataView {
-            return emptyDataSetTapEnabled()
-        }
-        return super.gestureRecognizerShouldBegin(gestureRecognizer)
-    }
-
-    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let emptyDataView = emptyDataView, gestureRecognizer == emptyDataView.tapGesture || otherGestureRecognizer == emptyDataView.tapGesture {
-            return true
-        }
-        return false
     }
 
     // MARK: - Display
@@ -273,7 +257,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         let swizzledSelector = Selectors.tableViewSwizzledReloadData
 
         tb_swizzleMethod(for: UITableView.self, originalSelector: originalSelector, swizzledSelector: swizzledSelector)
-        print("tb_swizzleTableViewReloadData")
     }()
 
     // swiftlint:disable variable_name
@@ -282,7 +265,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         let swizzledSelector = Selectors.tableViewSwizzledEndUpdates
 
         tb_swizzleMethod(for: UITableView.self, originalSelector: originalSelector, swizzledSelector: swizzledSelector)
-        print("tb_swizzleTableViewEndUpdates")
     }()
 
     // swiftlint:disable variable_name
@@ -291,7 +273,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         let swizzledSelector = Selectors.collectionViewSwizzledReloadData
 
         tb_swizzleMethod(for: UICollectionView.self, originalSelector: originalSelector, swizzledSelector: swizzledSelector)
-        print("tb_swizzleCollectionViewReloadData")
     }()
 
     // swiftlint:disable variable_name
@@ -300,7 +281,6 @@ extension UIScrollView: UIGestureRecognizerDelegate {
         let swizzledSelector = Selectors.collectionViewSwizzledPerformBatchUpdates
 
         tb_swizzleMethod(for: UICollectionView.self, originalSelector: originalSelector, swizzledSelector: swizzledSelector)
-        print("tb_swizzleCollectionViewPerformBatchUpdates")
     }()
 
     func tb_tableViewSwizzledReloadData() {

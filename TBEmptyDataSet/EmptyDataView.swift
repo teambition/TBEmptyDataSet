@@ -125,7 +125,7 @@ internal class EmptyDataView: UIView {
         let centerY = NSLayoutConstraint(item: contentView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: verticalOffset)
         addConstraint(centerX)
         addConstraint(centerY)
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(ViewStrings.contentView)]|", options: [], metrics: nil, views: [ViewStrings.contentView : contentView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(ViewStrings.contentView)]|", options: [], metrics: nil, views: [ViewStrings.contentView: contentView]))
 
         if let customView = customView {
             let translatesFrameIntoConstraints = customView.translatesAutoresizingMaskIntoConstraints
@@ -168,7 +168,7 @@ internal class EmptyDataView: UIView {
                 let viewString = ViewStrings.titleLabel
                 viewStrings.append(viewString)
                 views[viewString] = titleLabel
-                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[\(ViewStrings.titleLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.titleLabel : titleLabel]))
+                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[\(ViewStrings.titleLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.titleLabel: titleLabel]))
             } else {
                 titleLabel.removeFromSuperview()
             }
@@ -180,7 +180,7 @@ internal class EmptyDataView: UIView {
                 let viewString = ViewStrings.descriptionLabel
                 viewStrings.append(viewString)
                 views[viewString] = descriptionLabel
-                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[\(ViewStrings.descriptionLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.descriptionLabel : descriptionLabel]))
+                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[\(ViewStrings.descriptionLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.descriptionLabel: descriptionLabel]))
             } else {
                 descriptionLabel.removeFromSuperview()
             }

@@ -73,7 +73,7 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController {
         self.dataCount -= 1
         collectionView.performBatchUpdates({
             self.collectionView?.deleteItems(at: [indexPath])
-            }) { (completed) in
+            }) { (_) in
 
         }
     }

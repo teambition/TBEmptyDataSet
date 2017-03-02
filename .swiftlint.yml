@@ -3,6 +3,7 @@ disabled_rules: # rule identifiers to exclude from running
   - nesting
   - variable_name_min_length
   - cyclomatic_complexity
+  - class_delegate_protocol
 included: # paths to include during linting. `--path` is ignored if present. takes precendence over `excluded`.
 excluded: # paths to ignore during linting. overridden by `included`.
   - Carthage
