@@ -1,4 +1,4 @@
-#TBEmptyDataSet
+# TBEmptyDataSet
 TBEmptyDataSet is an extension of UITableView/UICollectionView's super class, it will  display a placeholder emptyDataSet when the data of tableView/collectionView is empty.
 
 TBEmptyDataSet can be composed of an image, a title and a description, or you can set it as a custom view.
@@ -7,14 +7,14 @@ TBEmptyDataSet can be composed of an image, a title and a description, or you ca
 ![Example](Screenshots/Example.gif "Example")
 
 
-##How To Get Started
-###Carthage
+## How To Get Started
+### Carthage
 Specify "TBEmptyDataSet" in your ```Cartfile```:
 ```ogdl 
 github "teambition/TBEmptyDataSet"
 ```
 
-###CocoaPods
+### CocoaPods
 Specify "TBEmptyDataSet" in your ```Podfile```:
 ```ruby 
 source 'https://github.com/CocoaPods/Specs.git'
@@ -24,7 +24,7 @@ use_frameworks!
 pod 'TBEmptyDataSet'
 ```
 
-###Usage
+### Usage
 ##### 1.  Assign the data source and delegate
 ```swift
 tableView.emptyDataSetDataSource = self
