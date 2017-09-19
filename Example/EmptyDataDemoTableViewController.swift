@@ -37,7 +37,7 @@ class EmptyDataDemoTableViewController: UITableViewController {
     }
 
     // MARK: - Helper
-    func fetchData(_ sender: Any) {
+    @objc func fetchData(_ sender: Any) {
         let delayTime = DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
         DispatchQueue.main.asyncAfter(deadline: delayTime) { () -> Void in
             self.dataCount = 7
@@ -91,22 +91,26 @@ extension EmptyDataDemoTableViewController: TBEmptyDataSetDataSource, TBEmptyDat
 
     func titleForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
         let title = EmptyData.titles[indexPath.row]
-        var attributes: [String: Any]?
+        var attributes: [NSAttributedStringKey: Any]?
         if indexPath.row == 1 {
-            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 22.0), NSForegroundColorAttributeName: UIColor.gray]
+            attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22.0),
+                          NSAttributedStringKey.foregroundColor: UIColor.gray]
         } else if indexPath.row == 2 {
-            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 24.0), NSForegroundColorAttributeName: UIColor.gray]
+            attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 24.0),
+                          NSAttributedStringKey.foregroundColor: UIColor.gray]
         }
         return NSAttributedString(string: title, attributes: attributes)
     }
 
     func descriptionForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
         let description = EmptyData.descriptions[indexPath.row]
-        var attributes: [String: Any]?
+        var attributes: [NSAttributedStringKey: Any]?
         if indexPath.row == 1 {
-            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 17.0), NSForegroundColorAttributeName: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)]
+            attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17.0),
+                          NSAttributedStringKey.foregroundColor: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)]
         } else if indexPath.row == 2 {
-            attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 18.0), NSForegroundColorAttributeName: UIColor.purple]
+            attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18.0),
+                          NSAttributedStringKey.foregroundColor: UIColor.purple]
         }
         return NSAttributedString(string: description, attributes: attributes)
     }
