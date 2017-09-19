@@ -168,7 +168,7 @@ internal class EmptyDataView: UIView {
                 let viewString = ViewStrings.titleLabel
                 viewStrings.append(viewString)
                 views[viewString] = titleLabel
-                contentView.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
+                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-10-[\(ViewStrings.titleLabel)]-10-|", options: [], metrics: nil, views: [ViewStrings.titleLabel: titleLabel]))
                 contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[\(ViewStrings.titleLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.titleLabel: titleLabel]))
             } else {
                 titleLabel.removeFromSuperview()
@@ -181,7 +181,7 @@ internal class EmptyDataView: UIView {
                 let viewString = ViewStrings.descriptionLabel
                 viewStrings.append(viewString)
                 views[viewString] = descriptionLabel
-                contentView.addConstraint(NSLayoutConstraint(item: descriptionLabel, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
+                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-10-[\(ViewStrings.descriptionLabel)]-10-|", options: [], metrics: nil, views: [ViewStrings.descriptionLabel: descriptionLabel]))
                 contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[\(ViewStrings.descriptionLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.descriptionLabel: descriptionLabel]))
             } else {
                 descriptionLabel.removeFromSuperview()
