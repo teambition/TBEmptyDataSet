@@ -76,6 +76,8 @@ internal class EmptyDataView: UIView {
     internal var tapGesture: UITapGestureRecognizer?
     internal var verticalOffset = DefaultValues.verticalOffset
     internal var verticalSpaces = DefaultValues.verticalSpaces
+    internal var titleMargin = DefaultValues.titleMargin
+    internal var descriptionMargin = DefaultValues.descriptionMargin
 
     // MARK: - Helper
     fileprivate func shouldShowImageView() -> Bool {
@@ -168,8 +170,9 @@ internal class EmptyDataView: UIView {
                 let viewString = ViewStrings.titleLabel
                 viewStrings.append(viewString)
                 views[viewString] = titleLabel
-                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-10-[\(ViewStrings.titleLabel)]-10-|", options: [], metrics: nil, views: [ViewStrings.titleLabel: titleLabel]))
-                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[\(ViewStrings.titleLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.titleLabel: titleLabel]))
+                contentView.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
+                contentView.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .leading, relatedBy: .greaterThanOrEqual, toItem: contentView, attribute: .leading, multiplier: 1, constant: titleMargin))
+                contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .trailing, relatedBy: .greaterThanOrEqual, toItem: titleLabel, attribute: .trailing, multiplier: 1, constant: titleMargin))
             } else {
                 titleLabel.removeFromSuperview()
             }
@@ -181,8 +184,9 @@ internal class EmptyDataView: UIView {
                 let viewString = ViewStrings.descriptionLabel
                 viewStrings.append(viewString)
                 views[viewString] = descriptionLabel
-                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-10-[\(ViewStrings.descriptionLabel)]-10-|", options: [], metrics: nil, views: [ViewStrings.descriptionLabel: descriptionLabel]))
-                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[\(ViewStrings.descriptionLabel)(>=0)]-|", options: [], metrics: nil, views: [ViewStrings.descriptionLabel: descriptionLabel]))
+                contentView.addConstraint(NSLayoutConstraint(item: descriptionLabel, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
+                contentView.addConstraint(NSLayoutConstraint(item: descriptionLabel, attribute: .leading, relatedBy: .greaterThanOrEqual, toItem: contentView, attribute: .leading, multiplier: 1, constant: descriptionMargin))
+                contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .trailing, relatedBy: .greaterThanOrEqual, toItem: descriptionLabel, attribute: .trailing, multiplier: 1, constant: descriptionMargin))
             } else {
                 descriptionLabel.removeFromSuperview()
             }

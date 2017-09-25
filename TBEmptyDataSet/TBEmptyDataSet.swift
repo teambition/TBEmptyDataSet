@@ -99,6 +99,14 @@ extension UIScrollView {
         return emptyDataSetDataSource?.verticalSpacesForEmptyDataSet(in: self) ?? DefaultValues.verticalSpaces
     }
 
+    fileprivate func emptyDataSetTitleMargin() -> CGFloat {
+        return emptyDataSetDataSource?.titleMarginForEmptyDataSet(in: self) ?? DefaultValues.titleMargin
+    }
+
+    fileprivate func emptyDataSetDescriptionMargin() -> CGFloat {
+        return emptyDataSetDataSource?.descriptionMarginForEmptyDataSet(in: self) ?? DefaultValues.descriptionMargin
+    }
+
     fileprivate func emptyDataSetCustomView() -> UIView? {
         return emptyDataSetDataSource?.customViewForEmptyDataSet(in: self)
     }
@@ -131,7 +139,7 @@ extension UIScrollView {
     }
 
     fileprivate func emptyDataSetAvailable() -> Bool {
-        if let _ = emptyDataSetDataSource {
+        if emptyDataSetDataSource != nil {
             return (self is UITableView) || (self is UICollectionView)
         }
         return false
@@ -210,6 +218,8 @@ extension UIScrollView {
 
         emptyDataView.verticalOffset = emptyDataSetVerticalOffset()
         emptyDataView.verticalSpaces = emptyDataSetVerticalSpaces()
+        emptyDataView.titleMargin = emptyDataSetTitleMargin()
+        emptyDataView.descriptionMargin = emptyDataSetDescriptionMargin()
 
         if let customView = emptyDataSetCustomView() {
             emptyDataView.customView = customView
@@ -239,15 +249,16 @@ extension UIScrollView {
 
     // MARK: - Method swizzling
     fileprivate class func tb_swizzleMethod(for aClass: AnyClass, originalSelector: Selector, swizzledSelector: Selector) {
-        let originalMethod = class_getInstanceMethod(aClass, originalSelector)
-        let swizzledMethod = class_getInstanceMethod(aClass, swizzledSelector)
+        guard let originalMethod = class_getInstanceMethod(aClass, originalSelector), let swizzledMethod = class_getInstanceMethod(aClass, swizzledSelector) else {
+            return
+        }
 
-        let didAddMethod = class_addMethod(aClass, originalSelector, method_getImplementation(swizzledMethod!), method_getTypeEncoding(swizzledMethod!))
+        let didAddMethod = class_addMethod(aClass, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
 
         if didAddMethod {
-            class_replaceMethod(aClass, swizzledSelector, method_getImplementation(originalMethod!), method_getTypeEncoding(originalMethod!))
+            class_replaceMethod(aClass, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
         } else {
-            method_exchangeImplementations(originalMethod!, swizzledMethod!)
+            method_exchangeImplementations(originalMethod, swizzledMethod)
         }
     }
 

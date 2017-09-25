@@ -89,11 +89,11 @@ extension EmptyDataDemoCollectionViewController: TBEmptyDataSetDataSource, TBEmp
         let title = EmptyData.titles[indexPath.row]
         var attributes: [NSAttributedStringKey: Any]?
         if indexPath.row == 1 {
-            attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22.0),
-                          NSAttributedStringKey.foregroundColor: UIColor.gray]
+            attributes = [.font: UIFont.systemFont(ofSize: 22),
+                          .foregroundColor: UIColor.gray]
         } else if indexPath.row == 2 {
-            attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 24.0),
-                          NSAttributedStringKey.foregroundColor: UIColor.gray]
+            attributes = [.font: UIFont.systemFont(ofSize: 24),
+                          .foregroundColor: UIColor.gray]
         }
         return NSAttributedString(string: title, attributes: attributes)
     }
@@ -102,10 +102,11 @@ extension EmptyDataDemoCollectionViewController: TBEmptyDataSetDataSource, TBEmp
         let description = EmptyData.descriptions[indexPath.row]
         var attributes: [NSAttributedStringKey: Any]?
         if indexPath.row == 1 {
-            attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17.0), NSAttributedStringKey.foregroundColor: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)]
+            attributes = [.font: UIFont.systemFont(ofSize: 17),
+                          .foregroundColor: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)]
         } else if indexPath.row == 2 {
-            attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18.0),
-                          NSAttributedStringKey.foregroundColor: UIColor.purple]
+            attributes = [.font: UIFont.systemFont(ofSize: 18),
+                          .foregroundColor: UIColor.purple]
         }
         return NSAttributedString(string: description, attributes: attributes)
     }
@@ -134,10 +135,10 @@ extension EmptyDataDemoCollectionViewController: TBEmptyDataSetDataSource, TBEmp
             let animation: CABasicAnimation = {
                 let animation = CABasicAnimation(keyPath: "transform")
                 animation.fromValue = NSValue(caTransform3D: CATransform3DIdentity)
-                animation.toValue = NSValue(caTransform3D: CATransform3DMakeRotation(CGFloat(M_PI_2), 0, 0, 1))
+                animation.toValue = NSValue(caTransform3D: CATransform3DMakeRotation(.pi / 2, 0, 0, 1))
                 animation.duration = 0.3
                 animation.isCumulative = true
-                animation.repeatCount = FLT_MAX
+                animation.repeatCount = .greatestFiniteMagnitude
                 return animation
             }()
             loadingImageView.layer.add(animation, forKey: "loading")
@@ -210,9 +211,9 @@ extension EmptyDataDemoCollectionViewController: UICollectionViewDelegateFlowLay
         super.viewWillTransition(to: size, with: coordinator)
 
         collectionViewLayout.invalidateLayout()
-        coordinator.animate(alongsideTransition: { (context) -> Void in
+        coordinator.animate(alongsideTransition: { (_) -> Void in
 
-        }) { (context) -> Void in
+            }) { (_) -> Void in
 
         }
     }

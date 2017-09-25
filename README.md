@@ -61,6 +61,14 @@ func verticalSpacesForEmptyDataSet(in scrollView: UIScrollView) -> [CGFloat] {
     // return the vertical spaces from top to bottom for EmptyDataSet, default is [12, 12]
 }
 
+func titleMarginForEmptyDataSet(in scrollView: UIScrollView) -> CGFloat {
+    // return the minimum horizontal margin space for title, default is 15
+}
+
+func descriptionMarginForEmptyDataSet(in scrollView: UIScrollView) -> CGFloat {
+    // return the minimum horizontal margin space for description, default is 15
+}
+
 func customViewForEmptyDataSet(in scrollView: UIScrollView) -> UIView? {
     // return an UIView instance for EmptyDataSet
 }
