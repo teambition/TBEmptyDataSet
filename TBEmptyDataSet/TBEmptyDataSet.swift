@@ -116,7 +116,7 @@ extension UIScrollView {
     }
 
     // MARK: - Helper
-    func didTapEmptyDataView(_ sender: Any) {
+    @objc func didTapEmptyDataView(_ sender: Any) {
         emptyDataSetDelegate?.emptyDataSetDidTapEmptyView(in: self)
     }
 
@@ -242,12 +242,12 @@ extension UIScrollView {
         let originalMethod = class_getInstanceMethod(aClass, originalSelector)
         let swizzledMethod = class_getInstanceMethod(aClass, swizzledSelector)
 
-        let didAddMethod = class_addMethod(aClass, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+        let didAddMethod = class_addMethod(aClass, originalSelector, method_getImplementation(swizzledMethod!), method_getTypeEncoding(swizzledMethod!))
 
         if didAddMethod {
-            class_replaceMethod(aClass, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+            class_replaceMethod(aClass, swizzledSelector, method_getImplementation(originalMethod!), method_getTypeEncoding(originalMethod!))
         } else {
-            method_exchangeImplementations(originalMethod, swizzledMethod)
+            method_exchangeImplementations(originalMethod!, swizzledMethod!)
         }
     }
 
@@ -283,21 +283,25 @@ extension UIScrollView {
         tb_swizzleMethod(for: UICollectionView.self, originalSelector: originalSelector, swizzledSelector: swizzledSelector)
     }()
 
+    @objc
     func tb_tableViewSwizzledReloadData() {
         tb_tableViewSwizzledReloadData()
         reloadEmptyDataSet()
     }
 
+    @objc
     func tb_tableViewSwizzledEndUpdates() {
         tb_tableViewSwizzledEndUpdates()
         reloadEmptyDataSet()
     }
 
+    @objc
     func tb_collectionViewSwizzledReloadData() {
         tb_collectionViewSwizzledReloadData()
         reloadEmptyDataSet()
     }
 
+    @objc
     func tb_collectionViewSwizzledPerformBatchUpdates(_ updates: (() -> Void)?, completion: ((Bool) -> Void)?) {
         tb_collectionViewSwizzledPerformBatchUpdates(updates) { [weak self](completed) in
             completion?(completed)
