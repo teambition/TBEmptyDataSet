@@ -182,7 +182,6 @@ extension UIScrollView {
     }
 
     // MARK: - Display
-    // swiftlint:disable function_body_length
     fileprivate func reloadEmptyDataSet() {
         guard emptyDataSetAvailable() else {
             return
