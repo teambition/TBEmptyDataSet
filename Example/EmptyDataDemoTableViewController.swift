@@ -91,7 +91,7 @@ extension EmptyDataDemoTableViewController: TBEmptyDataSetDataSource, TBEmptyDat
 
     func titleForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
         let title = EmptyData.titles[indexPath.row]
-        var attributes: [NSAttributedStringKey: Any]?
+        var attributes: [NSAttributedString.Key: Any]?
         if indexPath.row == 1 {
             attributes = [.font: UIFont.systemFont(ofSize: 22),
                           .foregroundColor: UIColor.gray]
@@ -104,7 +104,7 @@ extension EmptyDataDemoTableViewController: TBEmptyDataSetDataSource, TBEmptyDat
 
     func descriptionForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
         let description = EmptyData.descriptions[indexPath.row]
-        var attributes: [NSAttributedStringKey: Any]?
+        var attributes: [NSAttributedString.Key: Any]?
         if indexPath.row == 1 {
             attributes = [.font: UIFont.systemFont(ofSize: 17),
                           .foregroundColor: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)]
@@ -128,7 +128,7 @@ extension EmptyDataDemoTableViewController: TBEmptyDataSetDataSource, TBEmptyDat
 
     func customViewForEmptyDataSet(in scrollView: UIScrollView) -> UIView? {
         if isLoading {
-            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+            let activityIndicator = UIActivityIndicatorView(style: .gray)
             activityIndicator.startAnimating()
             return activityIndicator
         }

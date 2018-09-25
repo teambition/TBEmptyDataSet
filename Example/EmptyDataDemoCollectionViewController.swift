@@ -25,7 +25,7 @@ class EmptyDataDemoCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
 
         navigationItem.title = "CollectionView"
-        collectionView?.backgroundColor = UIColor.white
+        collectionView?.backgroundColor = .white
 
         collectionView?.emptyDataSetDataSource = self
         collectionView?.emptyDataSetDelegate = self
@@ -87,7 +87,7 @@ extension EmptyDataDemoCollectionViewController: TBEmptyDataSetDataSource, TBEmp
 
     func titleForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
         let title = EmptyData.titles[indexPath.row]
-        var attributes: [NSAttributedStringKey: Any]?
+        var attributes: [NSAttributedString.Key: Any]?
         if indexPath.row == 1 {
             attributes = [.font: UIFont.systemFont(ofSize: 22),
                           .foregroundColor: UIColor.gray]
@@ -100,7 +100,7 @@ extension EmptyDataDemoCollectionViewController: TBEmptyDataSetDataSource, TBEmp
 
     func descriptionForEmptyDataSet(in scrollView: UIScrollView) -> NSAttributedString? {
         let description = EmptyData.descriptions[indexPath.row]
-        var attributes: [NSAttributedStringKey: Any]?
+        var attributes: [NSAttributedString.Key: Any]?
         if indexPath.row == 1 {
             attributes = [.font: UIFont.systemFont(ofSize: 17),
                           .foregroundColor: UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)]
@@ -223,7 +223,7 @@ class ExampleCustomView: UIView {
     fileprivate lazy var contentLabel: UILabel = {
         let contentLabel = UILabel()
         contentLabel.numberOfLines = 0
-        contentLabel.textColor = UIColor.white
+        contentLabel.textColor = .white
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         return contentLabel
     }()
@@ -239,10 +239,10 @@ class ExampleCustomView: UIView {
     }
 
     fileprivate func commonInit() {
-        backgroundColor = UIColor.lightGray
+        backgroundColor = .lightGray
         layer.cornerRadius = 6
 
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.startAnimating()
         contentLabel.text = "Loading... Please wait a moment...\n\n(This is a custom empty data view, which is using pure AutoLayout)"

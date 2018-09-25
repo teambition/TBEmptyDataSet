@@ -21,7 +21,7 @@ internal class EmptyDataView: UIView {
     internal lazy var contentView: UIView = {
         let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.backgroundColor = UIColor.clear
+        contentView.backgroundColor = .clear
         contentView.alpha = 0
         return contentView
     }()
@@ -29,7 +29,7 @@ internal class EmptyDataView: UIView {
     internal lazy var imageView: UIImageView = { [unowned self] in
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = UIColor.clear
+        imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFill
         self.contentView.addSubview(imageView)
         return imageView
@@ -38,8 +38,8 @@ internal class EmptyDataView: UIView {
     internal lazy var titleLabel: UILabel = { [unowned self] in
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.backgroundColor = UIColor.clear
-        titleLabel.font = UIFont.systemFont(ofSize: 27)
+        titleLabel.backgroundColor = .clear
+        titleLabel.font = .systemFont(ofSize: 27)
         titleLabel.textColor = UIColor(white: 0.6, alpha: 1)
         titleLabel.textAlignment = .center
         titleLabel.lineBreakMode = .byWordWrapping
@@ -51,8 +51,8 @@ internal class EmptyDataView: UIView {
     internal lazy var descriptionLabel: UILabel = { [unowned self] in
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.backgroundColor = UIColor.clear
-        descriptionLabel.font = UIFont.systemFont(ofSize: 17)
+        descriptionLabel.backgroundColor = .clear
+        descriptionLabel.font = .systemFont(ofSize: 17)
         descriptionLabel.textColor = UIColor(white: 0.6, alpha: 1)
         descriptionLabel.textAlignment = .center
         descriptionLabel.lineBreakMode = .byWordWrapping
