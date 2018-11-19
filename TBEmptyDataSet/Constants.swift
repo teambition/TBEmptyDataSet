@@ -18,6 +18,8 @@ internal struct AssociatedKeys {
 internal struct Selectors {
     static let tableViewSwizzledReloadData = #selector(UIScrollView.tb_tableViewSwizzledReloadData)
     static let tableViewSwizzledEndUpdates = #selector(UIScrollView.tb_tableViewSwizzledEndUpdates)
+    @available(iOS 11.0, *)
+    static let tableViewSwizzledPerformBatchUpdates = #selector(UIScrollView.tb_tableViewSwizzledPerformBatchUpdates(_:completion:))
     static let collectionViewSwizzledReloadData = #selector(UIScrollView.tb_collectionViewSwizzledReloadData)
     static let collectionViewSwizzledPerformBatchUpdates = #selector(UIScrollView.tb_collectionViewSwizzledPerformBatchUpdates(_:completion:))
 }
@@ -26,6 +28,8 @@ internal struct TableViewSelectors {
     static let reloadData = #selector(UITableView.reloadData)
     static let endUpdates = #selector(UITableView.endUpdates)
     static let numberOfSections = #selector(UITableViewDataSource.numberOfSections(in:))
+    @available(iOS 11.0, *)
+    static let performBatchUpdates = #selector(UITableView.performBatchUpdates(_:completion:))
 }
 
 internal struct CollectionViewSelectors {

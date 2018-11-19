@@ -112,7 +112,7 @@ TBEmptyDataSet will update automatically when the data source of table view or c
 
 To be specific:
 * For UITableView, it updates when ```endUpdates()``` is called.
-* For UICollectionView, it updates when ```performBatchUpdates(_:completion:)``` is completed.
+* For both UITableView and UICollectionView, it updates when ```performBatchUpdates(_:completion:)``` is completed.
 * For both UITableView and UICollectionView, it updates when ```reloadData()``` is called.
 
 ## Minimum Requirement

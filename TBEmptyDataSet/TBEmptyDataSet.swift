@@ -23,6 +23,9 @@ extension UIScrollView {
                 case is UITableView:
                     UITableView.tb_swizzleTableViewReloadData
                     UITableView.tb_swizzleTableViewEndUpdates
+                    if #available(iOS 11.0, *) {
+                        UITableView.tb_swizzleTableViewPerformBatchUpdates
+                    }
                 case is UICollectionView:
                     UICollectionView.tb_swizzleCollectionViewReloadData
                     UICollectionView.tb_swizzleCollectionViewPerformBatchUpdates
@@ -278,6 +281,15 @@ extension UIScrollView {
     }()
 
     // swiftlint:disable variable_name
+    @available(iOS 11.0, *)
+    fileprivate static let tb_swizzleTableViewPerformBatchUpdates: () = {
+        let originalSelector = TableViewSelectors.performBatchUpdates
+        let swizzledSelector = Selectors.tableViewSwizzledPerformBatchUpdates
+
+        tb_swizzleMethod(for: UITableView.self, originalSelector: originalSelector, swizzledSelector: swizzledSelector)
+    }()
+
+    // swiftlint:disable variable_name
     fileprivate static let tb_swizzleCollectionViewReloadData: () = {
         let originalSelector = CollectionViewSelectors.reloadData
         let swizzledSelector = Selectors.collectionViewSwizzledReloadData
@@ -303,6 +315,15 @@ extension UIScrollView {
     func tb_tableViewSwizzledEndUpdates() {
         tb_tableViewSwizzledEndUpdates()
         reloadEmptyDataSet()
+    }
+
+    @available(iOS 11.0, *)
+    @objc
+    func tb_tableViewSwizzledPerformBatchUpdates(_ updates: (() -> Void)?, completion: ((Bool) -> Void)?) {
+        tb_tableViewSwizzledPerformBatchUpdates(updates) { [weak self](completed) in
+            completion?(completed)
+            self?.reloadEmptyDataSet()
+        }
     }
 
     @objc
