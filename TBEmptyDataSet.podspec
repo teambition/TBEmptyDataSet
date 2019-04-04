@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "TBEmptyDataSet"
-  s.version      = "2.9"
+  s.version      = "3.0"
   s.summary      = "An extension of UITableView/UICollectionView's super class, it will display a placeholder when the data is empty."
 
   s.homepage     = "https://github.com/teambition/TBEmptyDataSet"
