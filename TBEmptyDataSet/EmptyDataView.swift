@@ -122,6 +122,7 @@ internal class EmptyDataView: UIView {
 
     // MARK: - Actions
     internal func setConstraints() {
+        translatesAutoresizingMaskIntoConstraints = false
         let centerX = NSLayoutConstraint(item: contentView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0)
         let centerY = NSLayoutConstraint(item: contentView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: verticalOffset)
         addConstraint(centerX)
