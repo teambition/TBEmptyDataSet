@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D3013DFB1C06B7FA00266EE2 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3013DFA1C06B7FA00266EE2 /* DemoViewController.swift */; };
+		D33C7C801C44E9A800E1687A /* TBEmptyDataSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D33C7C7F1C44E9A800E1687A /* TBEmptyDataSet.framework */; };
+		D33C7C811C44E9A800E1687A /* TBEmptyDataSet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D33C7C7F1C44E9A800E1687A /* TBEmptyDataSet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D3565AA31BFD9449002CFA16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3565AA21BFD9449002CFA16 /* AppDelegate.swift */; };
 		D3565AA81BFD9449002CFA16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3565AA61BFD9449002CFA16 /* Main.storyboard */; };
 		D3565AAA1BFD9449002CFA16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3565AA91BFD9449002CFA16 /* Assets.xcassets */; };
@@ -16,12 +18,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4A1E7A1822B9F8CE0024CC3C /* Embed Frameworks */ = {
+		D33C7C821C44E9A800E1687A /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D33C7C811C44E9A800E1687A /* TBEmptyDataSet.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -30,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		D3013DFA1C06B7FA00266EE2 /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
+		D33C7C7F1C44E9A800E1687A /* TBEmptyDataSet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = TBEmptyDataSet.framework; path = "/Users/hongxin/Library/Developer/Xcode/DerivedData/TBEmptyDataSet-cgdivxseqtlgnzctplvlotcjtyby/Build/Products/Debug-iphoneos/TBEmptyDataSet.framework"; sourceTree = "<absolute>"; };
 		D3565A9F1BFD9449002CFA16 /* TBEmptyDataSetExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TBEmptyDataSetExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3565AA21BFD9449002CFA16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3565AA71BFD9449002CFA16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -44,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D33C7C801C44E9A800E1687A /* TBEmptyDataSet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +58,7 @@
 		D3565A961BFD9449002CFA16 = {
 			isa = PBXGroup;
 			children = (
+				D33C7C7F1C44E9A800E1687A /* TBEmptyDataSet.framework */,
 				D3565AA11BFD9449002CFA16 /* Example */,
 				D3565AA01BFD9449002CFA16 /* Products */,
 			);
@@ -91,7 +97,7 @@
 				D3565A9C1BFD9449002CFA16 /* Frameworks */,
 				D3565A9D1BFD9449002CFA16 /* Resources */,
 				D3013DFC1C06E0D200266EE2 /* ShellScript */,
-				4A1E7A1822B9F8CE0024CC3C /* Embed Frameworks */,
+				D33C7C821C44E9A800E1687A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
