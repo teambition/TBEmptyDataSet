@@ -8,21 +8,10 @@ TBEmptyDataSet can be composed of an image, a title and a description, or you ca
 
 
 ## How To Get Started
-### Carthage
-Specify "TBEmptyDataSet" in your ```Cartfile```:
-```ogdl 
-github "teambition/TBEmptyDataSet"
-```
+### Swift Package Manager
 
-### CocoaPods
-Specify "TBEmptyDataSet" in your ```Podfile```:
-```ruby 
-source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
-use_frameworks!
+Specify "https://github.com/thejeff77/TBEmptyDataSet.git" to add the Swift Package:
 
-pod 'TBEmptyDataSet'
-```
 
 ### Usage
 ##### 1.  Assign the data source and delegate
