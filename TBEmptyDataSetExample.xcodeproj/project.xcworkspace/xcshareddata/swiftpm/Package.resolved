@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "TBEmptyDataSet",
+        "repositoryURL": "https://github.com/thejeff77/TBEmptyDataSet.git",
+        "state": {
+          "branch": null,
+          "revision": "097a50c02f72ea254446bbfc106d6a6fb4039904",
+          "version": "4.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
