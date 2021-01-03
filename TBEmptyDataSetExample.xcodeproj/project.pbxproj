@@ -3,13 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		95F5B7B025A15B290075EB37 /* TBEmptyDataSet in Frameworks */ = {isa = PBXBuildFile; productRef = 95F5B7AF25A15B290075EB37 /* TBEmptyDataSet */; };
 		D3013DFB1C06B7FA00266EE2 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3013DFA1C06B7FA00266EE2 /* DemoViewController.swift */; };
-		D33C7C801C44E9A800E1687A /* TBEmptyDataSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D33C7C7F1C44E9A800E1687A /* TBEmptyDataSet.framework */; };
-		D33C7C811C44E9A800E1687A /* TBEmptyDataSet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D33C7C7F1C44E9A800E1687A /* TBEmptyDataSet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D3565AA31BFD9449002CFA16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3565AA21BFD9449002CFA16 /* AppDelegate.swift */; };
 		D3565AA81BFD9449002CFA16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3565AA61BFD9449002CFA16 /* Main.storyboard */; };
 		D3565AAA1BFD9449002CFA16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3565AA91BFD9449002CFA16 /* Assets.xcassets */; };
@@ -24,7 +23,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D33C7C811C44E9A800E1687A /* TBEmptyDataSet.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -33,7 +31,6 @@
 
 /* Begin PBXFileReference section */
 		D3013DFA1C06B7FA00266EE2 /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
-		D33C7C7F1C44E9A800E1687A /* TBEmptyDataSet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = TBEmptyDataSet.framework; path = "/Users/hongxin/Library/Developer/Xcode/DerivedData/TBEmptyDataSet-cgdivxseqtlgnzctplvlotcjtyby/Build/Products/Debug-iphoneos/TBEmptyDataSet.framework"; sourceTree = "<absolute>"; };
 		D3565A9F1BFD9449002CFA16 /* TBEmptyDataSetExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TBEmptyDataSetExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3565AA21BFD9449002CFA16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3565AA71BFD9449002CFA16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -48,7 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D33C7C801C44E9A800E1687A /* TBEmptyDataSet.framework in Frameworks */,
+				95F5B7B025A15B290075EB37 /* TBEmptyDataSet in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,7 +55,6 @@
 		D3565A961BFD9449002CFA16 = {
 			isa = PBXGroup;
 			children = (
-				D33C7C7F1C44E9A800E1687A /* TBEmptyDataSet.framework */,
 				D3565AA11BFD9449002CFA16 /* Example */,
 				D3565AA01BFD9449002CFA16 /* Products */,
 			);
@@ -104,6 +100,9 @@
 			dependencies = (
 			);
 			name = TBEmptyDataSetExample;
+			packageProductDependencies = (
+				95F5B7AF25A15B290075EB37 /* TBEmptyDataSet */,
+			);
 			productName = TBEmptyDataSet;
 			productReference = D3565A9F1BFD9449002CFA16 /* TBEmptyDataSetExample.app */;
 			productType = "com.apple.product-type.application";
@@ -115,7 +114,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = Teambition;
 				TargetAttributes = {
 					D3565A9E1BFD9449002CFA16 = {
@@ -133,6 +132,9 @@
 				Base,
 			);
 			mainGroup = D3565A961BFD9449002CFA16;
+			packageReferences = (
+				95F5B7AE25A15B290075EB37 /* XCRemoteSwiftPackageReference "TBEmptyDataSet" */,
+			);
 			productRefGroup = D3565AA01BFD9449002CFA16 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -219,6 +221,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -243,7 +246,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -275,6 +278,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -293,10 +297,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -306,9 +311,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Teambition.TBEmptyDataSetExample;
 				PRODUCT_NAME = TBEmptyDataSetExample;
 				SWIFT_VERSION = 5.0;
@@ -319,9 +328,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Teambition.TBEmptyDataSetExample;
 				PRODUCT_NAME = TBEmptyDataSetExample;
 				SWIFT_VERSION = 5.0;
@@ -350,6 +363,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		95F5B7AE25A15B290075EB37 /* XCRemoteSwiftPackageReference "TBEmptyDataSet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/thejeff77/TBEmptyDataSet.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		95F5B7AF25A15B290075EB37 /* TBEmptyDataSet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95F5B7AE25A15B290075EB37 /* XCRemoteSwiftPackageReference "TBEmptyDataSet" */;
+			productName = TBEmptyDataSet;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D3565A971BFD9449002CFA16 /* Project object */;
 }
